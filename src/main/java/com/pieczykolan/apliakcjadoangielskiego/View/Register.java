@@ -83,6 +83,8 @@ public class Register extends VerticalLayout {
         add(labelNameRegister,textFieldNick, fieldPassword,confirmPasswordField,comboBoxGender,upload, buttonConfirmRegister,routerLinkLogin);
     }
 
+    //TODO zdjęcia avatara przenieść do bazy danych bo w pliku nie oddaje
+
     private void register(String userName, String password, String confirmPassword, String imageUrl, String gender) {
         if(userName.trim().isEmpty()) {
             Notification.show("Enter Username");

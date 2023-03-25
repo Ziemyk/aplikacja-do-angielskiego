@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepo userRepo;
-
+    
     @Autowired
     public AuthService(UserRepo userRepo) {
         this.userRepo = userRepo;
@@ -35,9 +35,7 @@ public class AuthService {
             throw new AuthException();
         }
     }
-    //public User passingLoggedUser(User user){
-       // return u
-    //}
+
     public boolean checkUnique(String username){
 
         if(userRepo.existsBynickName(username)){

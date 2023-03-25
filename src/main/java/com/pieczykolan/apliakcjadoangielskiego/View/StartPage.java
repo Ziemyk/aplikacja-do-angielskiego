@@ -4,9 +4,10 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.ParentLayout;
 import com.vaadin.flow.router.Route;
 import org.springframework.web.servlet.tags.form.ButtonTag;
-@Route("StartPage")
+@Route("")
 public class StartPage extends VerticalLayout {
     private Label labelName ;
     private Button buttonLogin;

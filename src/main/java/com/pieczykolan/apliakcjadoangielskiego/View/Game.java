@@ -4,7 +4,6 @@ import com.nimbusds.jose.util.Resource;
 import com.pieczykolan.apliakcjadoangielskiego.Services.GameLogic;
 import com.pieczykolan.apliakcjadoangielskiego.Services.GameSettings;
 
-import com.pieczykolan.apliakcjadoangielskiego.Services.Reminder;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -12,6 +11,8 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.AppShellConfigurator;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -25,6 +26,7 @@ import java.util.TimerTask;
 
 
 @Route("Game/level/:chosenlevel")
+
 public class Game extends VerticalLayout implements BeforeEnterObserver {
     //TODO tutaj odbieramy operując na klasie GameLogic prowadzimy gre wizualnie
     // ta klasa nie jest zależna od levelu ona zawsze bedzie wyświetlała to samo
@@ -54,23 +56,14 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
         b.addClickListener(e -> {
 
         });
-//        TimerTask timerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                System.out.println("Task Timer on Fixed Rate");
-//            }
-//        };
-        ;
-        //UI ui = UI.getCurrent();
-       //timer.scheduleAtFixedRate(new Reminder(ui, this,gameLogic), 0, 2000);
-       // addDetachListener(event -> timer.cancel());
+
         buttonConfirm.addClickListener(e -> {
             gameLogic.checkLetter(textFieldLetter.getValue());
             textFieldLetter.clear();
         });
         //TODO sprawdzić czy z tym innym timerem bedzie działo
         //verticalLayout.add(lvlLabel,hangmanImage,startButton);
-        add(lvlLabel, hangmanImage, startButton, textFieldLetter, label, buttonConfirm, b);
+        add( lvlLabel, hangmanImage, startButton, textFieldLetter, label, buttonConfirm, b);
     }
 
 
@@ -96,7 +89,7 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
                             numberOfPicture + ".jpg"));
         }
         hangmanImage.setSrc(imageResource);
-        System.out.println(imageResource);
+        //System.out.println(imageResource);
 
     }
 

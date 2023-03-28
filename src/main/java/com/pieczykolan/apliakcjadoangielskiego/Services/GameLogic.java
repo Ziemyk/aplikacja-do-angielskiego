@@ -1,39 +1,42 @@
 package com.pieczykolan.apliakcjadoangielskiego.Services;
 
 import com.pieczykolan.apliakcjadoangielskiego.View.Game;
-import com.pieczykolan.apliakcjadoangielskiego.View.MainPage;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.server.VaadinSession;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 import java.util.TimerTask;
 
-public class GameLogic extends TimerTask{
+public class GameLogic extends TimerTask  {
     private GameSettings gameSettings = new GameSettings();
 
     private Game game ;
     private String currentPassword;
-    private String hashPassword;
-    private int currentNumberOfPassword = 0;
+    private String currentHashPassword;
+    private int currentIterationOfPassword = 0;
     static private List<String> words  ;
+
     //private int numberOfRounds = words.size();
-    private int currentNumberOfImage = 0;
-    Timer timer;
+    private int currentIterationOfImage = 0;
+
     private final UI ui;
     public boolean is = false;
     public GameLogic(Game game, UI ui) {
         this.game = game;
         this.ui = ui;
-
         words = new ArrayList<>();
 
-        //new Reminder(10);
-        //taskReminder.scheduledExecutionTime();
-        //game.setHangmanImage(currentNumberOfImage);
+    }
+    public void setCurrentIterationOfImage(int currentNumberOfImage) {
+        this.currentIterationOfImage = currentNumberOfImage;
+        if(currentNumberOfImage == words.size()){
+            endGame();
+        }
+    }
+    private void endGame() {
+        System.out.println("koniec gry");
     }
 
     public  void checkLetter(String guessLetter ) {
@@ -42,34 +45,48 @@ public class GameLogic extends TimerTask{
             return;
         }
         int indexOfGuessWord;
-        if(currentPassword.toLowerCase().contains(guessLetter)){
-              indexOfGuessWord = currentPassword.indexOf(guessLetter.charAt(0));
-              char[] myNameChars = hashPassword.toCharArray();
-              myNameChars[indexOfGuessWord] = guessLetter.charAt(0);
-              hashPassword = String.valueOf(myNameChars);
-              game.updatePassword(hashPassword);
-        }else{
-            currentNumberOfImage += 1;
-            game.setHangmanImage(currentNumberOfImage);
-        }
-        if(hashPassword.equals(currentPassword)){
-            currentNumberOfPassword++;
+        validateLetterWithPassword(guessLetter);
+        if(currentHashPassword.equals(currentPassword)){
+            currentIterationOfPassword++;
             startGame();
         }
     }
+
+    private void validateLetterWithPassword(String guessLetter) {
+        int indexOfGuessWord;
+        String tmpCurrentPassword = currentPassword.toLowerCase();
+        for(int i = 0; i < tmpCurrentPassword.length(); i++) {
+            if (tmpCurrentPassword.indexOf(i) == guessLetter.charAt(0)) {
+                char[] myNameChars = currentHashPassword.toCharArray();
+                myNameChars[i] = guessLetter.charAt(0);
+                currentHashPassword = String.valueOf(myNameChars);
+                game.updatePassword(currentHashPassword);
+            } else {
+                setCurrentIterationOfImage(++currentIterationOfImage);
+                game.setHangmanImage(currentIterationOfImage);
+            }
+        }
+//        if (currentPassword.toLowerCase().contains(guessLetter)) {
+//            indexOfGuessWord = currentPassword.indexOf(guessLetter.charAt(0));
+//            char[] myNameChars = currentHashPassword.toCharArray();
+//            myNameChars[indexOfGuessWord] = guessLetter.charAt(0);
+//            currentHashPassword = String.valueOf(myNameChars);
+//            game.updatePassword(currentHashPassword);
+//        } else {
+//            setCurrentIterationOfImage(++currentIterationOfImage);
+//            game.setHangmanImage(currentIterationOfImage);
+//        }
+    }
+
+
     @Override
     public void run(){
         try {
-            //System.out.println("Task Timer on Fixed Rate");
-            Thread.sleep(500);
-            currentNumberOfImage =+ 1;
+
+            setCurrentIterationOfImage(++currentIterationOfImage);
             ui.access(() -> {
-                System.out.println("Task Timer on Fixed Rate");
-                //game.getUI();
-                //game.setHangmanImage(3);
-                game.setHashPassword(5);
-                //game.getUI().get().push();
-                //ui.push();
+                game.setHangmanImage(currentIterationOfImage);
+                ui.push();
             });
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -78,29 +95,14 @@ public class GameLogic extends TimerTask{
 
     public void startGame()   {
         words = gameSettings.numberOfWords(gameSettings.getLevel());
-        // for(int i= 0; i<words.size();i++) {
-        currentPassword = words.get(currentNumberOfPassword).toLowerCase();
 
-        hashPassword = game.setHashPassword(currentPassword.length()).toLowerCase();
+        currentPassword = words.get(currentIterationOfPassword).toLowerCase();
 
-//
-
-//        game.addAttachListener(e -> {
-//            UI ui = e.getUI();
-//            timer.schedule(new Reminder(ui, game),0,2000);
-//        });
-//        game.addDetachListener(e -> timer.cancel());
-//        timer.schedule(new TimerTask() {
-//            public void run() {
-//                currentNumberOfPassword++;
-//                game.setHangmanImage(currentNumberOfImage);
-//            }
-//        },0,5*1000);
-            //checkLetter(currentPassword);
+        currentHashPassword = game.setHashPassword(currentPassword.length()).toLowerCase();
 
 
 
-      //  }
+
     }
 
 

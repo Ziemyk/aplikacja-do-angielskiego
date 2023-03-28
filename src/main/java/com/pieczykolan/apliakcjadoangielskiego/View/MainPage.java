@@ -15,11 +15,10 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
-import org.hibernate.type.ShortType;
+
 //@PageTitle("EnglishStudy")
 
 @Route("EnglishStudy")
-
 public class MainPage extends VerticalLayout {
     private User user;
     static public int level = 1;
@@ -58,9 +57,10 @@ public class MainPage extends VerticalLayout {
 
 
     public void userView() {
+        //VaadinSession.getCurrent().setAttribute(User.class,user);
         user = VaadinSession.getCurrent().getAttribute(User.class);
-        System.out.println(user.toString());
-        System.out.println(user.getImage());
+        //System.out.println(user.toString());
+        //System.out.println(user.getImage());
         Notification.show("Hello " + user.getNickName()).setPosition(Notification.Position.TOP_STRETCH);
         Label labelName = new Label(user.getNickName());
         Image image = new Image(setImage(user.getImage()), "My Streamed Image");
@@ -86,7 +86,7 @@ public class MainPage extends VerticalLayout {
         setHorizontalComponentAlignment(Alignment.CENTER, buttonPlay);
 
          add(horizontalLayout, image, labelName, buttonPlay);
-         VaadinSession.getCurrent().close();
+         //VaadinSession.getCurrent().close();
     }
     private StreamResource setImage(String image) {
         StreamResource imageResource;

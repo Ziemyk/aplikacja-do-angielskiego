@@ -17,6 +17,8 @@ import com.vaadin.flow.router.RouterLink;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.*;
 
@@ -40,6 +42,7 @@ public class Register extends VerticalLayout {
     private MultiFileMemoryBuffer memoryBuffer = new MultiFileMemoryBuffer();
 
     private MultipartFile multipartFile;
+    private ByteArrayOutputStream pngContent = new ByteArrayOutputStream();
     @Autowired
     public Register(AuthService authService) throws IOException {
         this.authService = authService;
@@ -54,7 +57,6 @@ public class Register extends VerticalLayout {
         upload.setAcceptedFileTypes("image/jpeg","image/png","image/jpg");
         upload.addSucceededListener(e -> {
             imageName = e.getFileName();
-
             if(!Files.exists(path)){
                 try {
                     Files.createDirectories(path);
@@ -62,9 +64,12 @@ public class Register extends VerticalLayout {
                     throw new RuntimeException(ex);
                 }
             }
-            try (InputStream inputStream = memoryBuffer.getInputStream(imageName)){
-                Path filePath = path.resolve(imageName);
-                Files.copy(inputStream,filePath, StandardCopyOption.REPLACE_EXISTING);
+            try {
+                BufferedImage inputImage = ImageIO.read(memoryBuffer.getInputStream(imageName));
+
+                ImageIO.write(inputImage, "png", pngContent);
+                //Path filePath = path.resolve(imageName);
+                //Files.copy(inputStream,filePath, StandardCopyOption.REPLACE_EXISTING);
 
             } catch (IOException ex) {
                 try {
@@ -79,13 +84,13 @@ public class Register extends VerticalLayout {
         routerLinkLogin = new RouterLink("Login", Login.class);
         routerLinkLogin.setVisible(false);
         buttonConfirmRegister.addClickListener(buttonClickEvent -> register(textFieldNick.getValue(),fieldPassword.getValue(),confirmPasswordField.getValue(),
-               imageName ,comboBoxGender.getValue().toString()));
+                pngContent.toByteArray() ,comboBoxGender.getValue().toString()));
         add(labelNameRegister,textFieldNick, fieldPassword,confirmPasswordField,comboBoxGender,upload, buttonConfirmRegister,routerLinkLogin);
     }
 
     //TODO zdjęcia avatara przenieść do bazy danych bo w pliku nie oddaje
 
-    private void register(String userName, String password, String confirmPassword, String imageUrl, String gender) {
+    private void register(String userName, String password, String confirmPassword, byte [] imageBytes, String gender) {
         if(userName.trim().isEmpty()) {
             Notification.show("Enter Username");
         } else if(authService.checkUnique(userName)){
@@ -97,7 +102,7 @@ public class Register extends VerticalLayout {
         }else if(gender.isEmpty()){
             Notification.show("Choose Gender");
         } else {
-            authService.addUser(userName,password, imageUrl, gender);
+            authService.addUser(userName,password, imageBytes, gender);
             Notification.show("Registration successed");
             routerLinkLogin.setVisible(true);
         }

@@ -1,14 +1,12 @@
 package com.pieczykolan.apliakcjadoangielskiego.model;
 
-import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.html.Image;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.*;
 
 @Entity
-public class User {
+public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -17,12 +15,12 @@ public class User {
     private String nickName;
     private String password;
     private String passwordSalt;
-    private String image;
-
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte [] imageBytes;
     private Gender gender;
     private String passwordHash;
-
-
+    private int level;
     public User() {
         super();
     }
@@ -47,14 +45,15 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public User(String nickName, String password, String image, String gender) {
+    public User(String nickName, String password, byte [] imageBytes, String gender, int level) {
 
         this.nickName = nickName;
         this.password = password;
         this.passwordSalt = RandomStringUtils.random(32);
         this.passwordHash = DigestUtils.sha1Hex(password + passwordSalt);
-        this.image = image;
+        this.imageBytes = imageBytes;
         this.gender = Gender.valueOf(gender);
+        this.level = level;
     }
 
     public int getId() {
@@ -75,8 +74,8 @@ public class User {
         return password;
     }
 
-    public String getImage() {
-        return image;
+    public byte [] getImageBytes() {
+        return imageBytes;
     }
 
     public Gender getGender() {
@@ -91,12 +90,20 @@ public class User {
         this.password = password;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageBytes(byte [] imageBytes) {
+        this.imageBytes = imageBytes;
     }
 
     public void setGender(String gender) {
         this.gender = Gender.valueOf(gender);
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public boolean checkPassword(String password) {

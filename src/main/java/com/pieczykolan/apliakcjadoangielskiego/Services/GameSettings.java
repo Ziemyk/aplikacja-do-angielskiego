@@ -9,15 +9,13 @@ import java.util.Random;
 import java.util.TimerTask;
 
 public class GameSettings  {
-    //TODO tu ustawiamy wartość dla danego levelu gry
-    // tworzymy baze ze słowami i zwracamy ja do logiki gry czyli do GameLogic
-    //private MainPage mainPage ;
+
     private int level;
     private List<String> wordList ;
 
-    public GameSettings(){
+    public GameSettings(int level){
         //MainPage mainPage = new MainPage();
-        level = MainPage.level;
+        this.level = level;
         wordList = new ArrayList<>();
         generateWord();
 

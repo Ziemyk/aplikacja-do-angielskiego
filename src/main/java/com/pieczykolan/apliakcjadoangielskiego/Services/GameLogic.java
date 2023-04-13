@@ -2,18 +2,14 @@ package com.pieczykolan.apliakcjadoangielskiego.Services;
 
 import com.pieczykolan.apliakcjadoangielskiego.View.Game;
 import com.pieczykolan.apliakcjadoangielskiego.model.User;
-import com.pieczykolan.apliakcjadoangielskiego.repo.UserRepo;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.instrument.classloading.jboss.JBossLoadTimeWeaver;
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class GameLogic   {
     private Game game ;
@@ -47,7 +43,6 @@ public class GameLogic   {
         this.ui = ui;
         this.authService = authService;
         words = new ArrayList<>();
-
     }
     public void setCurrentIterationOfImage(int currentNumberOfImage) {
         this.currentIterationOfImage = currentNumberOfImage;
@@ -55,7 +50,6 @@ public class GameLogic   {
             endGame( false);
         }
     }
-
     private void endGame(boolean isWinOrLose) {
         timer.cancel();
         if(isWinOrLose){
@@ -68,16 +62,18 @@ public class GameLogic   {
             earnedPoints = 0;
             game.loseView(words,earnedPoints);
         }
-
     }
     public void checkWord(String value) {
         if(value.equals(currentPassword)) {
+            game.setListBoxOfWord(words.get(currentIterationOfPassword));
             currentIterationOfPassword++;
+            game.setProgressBar(0, numberOfRounds, currentIterationOfPassword);
+            restartTimer();
             game.displayNotification();
             if (currentIterationOfPassword == numberOfRounds) {
                 endGame(true);
             } else {
-                nextLevel();
+                nextWord();
             }
         }else{
             setCurrentIterationOfImage(currentIterationOfImage+1);
@@ -92,16 +88,17 @@ public class GameLogic   {
         validateLetterWithPassword(guessLetter);
         if(currentHashPassword.equals(currentPassword)){
             currentIterationOfPassword++;
+            game.setProgressBar(0, numberOfRounds, currentIterationOfPassword);
             game.displayNotification();
             if(currentIterationOfPassword == numberOfRounds){
                 endGame(true);
             }else {
-                nextLevel();
+                nextWord();
             }
         }
     }
 
-    private void nextLevel() {
+    private void nextWord() {
         currentPassword = words.get(currentIterationOfPassword).toLowerCase();
         currentHashPassword = game.setHashPassword(currentPassword.length()).toLowerCase();
         timer.scheduleAtFixedRate(new Reminder(ui,game,this), delay, period );
@@ -110,9 +107,9 @@ public class GameLogic   {
     private void validateLetterWithPassword(String guessLetter) {
         String tmpCurrentPassword = currentPassword.toLowerCase();
         if (tmpCurrentPassword.contains(guessLetter)) {
+
             for (int i = 0; i < tmpCurrentPassword.length(); i++) {
                 if (tmpCurrentPassword.charAt(i) == guessLetter.charAt(0)) {
-                    System.out.println("essa");
                     char[] myNameChars = currentHashPassword.toCharArray();
                     myNameChars[i] = guessLetter.charAt(0);
                     currentHashPassword = String.valueOf(myNameChars);
@@ -125,6 +122,7 @@ public class GameLogic   {
             game.setHangmanImage(currentIterationOfImage);
         }
         restartTimer();
+
     }
 
     public void restartTimer(){
@@ -135,16 +133,13 @@ public class GameLogic   {
     }
     public void startGame()   {
         gameSettings = new GameSettings(game.getLevel());
-
         words = gameSettings.numberOfWords(gameSettings.getLevel());
         numberOfRounds = words.size();
+        game.setProgressBar(0,numberOfRounds,0);
         for(int i=0 ;i<numberOfRounds; i++ ){
             System.out.println(words.get(i));
         }
-        nextLevel();
-
-
-
+        nextWord();
 
     }
 

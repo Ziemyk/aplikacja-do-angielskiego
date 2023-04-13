@@ -5,11 +5,15 @@ import com.pieczykolan.apliakcjadoangielskiego.Services.GameLogic;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.listbox.ListBox;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -22,33 +26,34 @@ import java.util.List;
 
 
 @Route("Game/level/:chosenlevel")
-
 public class Game extends VerticalLayout implements BeforeEnterObserver {
-
     private String chosenLevel;
     private int level;
     private Image hangmanImage = new Image();
     private Label labelHashPassword = new Label();
     private Button buttonConfirmLetter = new Button("Confirm letter");
     private Button  buttonConfirmWord = new Button("Confirm whole word");
-    private TextField textFieldLetter = new TextField("Enter the letter");
+    private TextField textFieldLetter = new TextField("Letter");
     private TextField textFieldWord =  new TextField("Entry the word");
     private Button startButton = new Button("Start");
+    private ListBox<String> listBoxOfWords = new ListBox<>();
+    private ProgressBar progressBar =  new ProgressBar();
+
     Label lvlLabel = new Label();
     UI ui = UI.getCurrent();
     GameLogic gameLogic;
     @Autowired
     public Game(AuthService authService) {
         // verticalLayout = new VerticalLayout();
-
         gameLogic = new GameLogic(Game.this,ui,authService);
         setHangmanImage(0);
-
+        textFieldLetterSettings();
+        listBoxOfWords.setClassName("Guessed Words");
+        progressBar.setValue(0);
         startButton.addClickListener(e -> {
             gameLogic.startGame();
+            startButton.setEnabled(false);
         });
-
-
         textFieldLetter.addKeyPressListener(Key.ENTER,keyPressEvent ->{
             gameLogic.checkLetter(textFieldLetter.getValue());
             textFieldLetter.clear();
@@ -65,14 +70,33 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
             gameLogic.checkWord(textFieldWord.getValue());
             textFieldWord.clear();
         });
+
         //verticalLayout.add(lvlLabel,hangmanImage,startButton);
-        add( lvlLabel, hangmanImage, startButton, textFieldLetter, labelHashPassword, buttonConfirmLetter,textFieldWord,buttonConfirmWord );
+        add( lvlLabel, hLayoutHangmanAndListBox(), startButton,
+                textFieldLetter, labelHashPassword, buttonConfirmLetter,
+                textFieldWord,buttonConfirmWord, progressBar );
     }
-    //KeyModifier keyModifier = new KeyEventListener<>();
+    public void setClassName(){
+        hangmanImage.setClassName("hangmanImage");
+    }
+
+    public HorizontalLayout hLayoutHangmanAndListBox(){
+        return new HorizontalLayout(hangmanImage,listBoxOfWords);
+    }
     public int getLevel() {
         return level;
     }
+    public void setProgressBar(int min, int max, int value){
+        progressBar.setMin(min);
+        progressBar.setMax(max);
+        progressBar.setValue(value);
 
+    }
+    public void textFieldLetterSettings(){
+        textFieldLetter.setMinLength(1);
+        textFieldLetter.setMaxLength(1);
+        textFieldLetter.setWidth(35,Unit.PIXELS);
+    }
     public String setHashPassword(int numberOfWords) {
         labelHashPassword.setText("");
         for (int i = 0; i < numberOfWords; i++) {
@@ -80,7 +104,6 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
             //label.add(String.valueOf(i));
         }
         return labelHashPassword.getText();
-
     }
     public void setHangmanImage(int numberOfPicture) {
         StreamResource imageResource;
@@ -94,7 +117,6 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
         }
         hangmanImage.setSrc(imageResource);
         //System.out.println(imageResource);
-
     }
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
@@ -167,12 +189,9 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
     public void displayNotification() {
         Notification.show("Word guessed. Congratulations !!!");
     }
+
+    public void setListBoxOfWord(String guessedWord) {
+        listBoxOfWords.add(new Label(guessedWord));
+
+    }
 }
-
-
-
-
-
-
-
-

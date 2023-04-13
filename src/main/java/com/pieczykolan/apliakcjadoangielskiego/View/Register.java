@@ -68,8 +68,6 @@ public class Register extends VerticalLayout {
                 BufferedImage inputImage = ImageIO.read(memoryBuffer.getInputStream(imageName));
 
                 ImageIO.write(inputImage, "png", pngContent);
-                //Path filePath = path.resolve(imageName);
-                //Files.copy(inputStream,filePath, StandardCopyOption.REPLACE_EXISTING);
 
             } catch (IOException ex) {
                 try {
@@ -87,9 +85,6 @@ public class Register extends VerticalLayout {
                 pngContent.toByteArray() ,comboBoxGender.getValue().toString()));
         add(labelNameRegister,textFieldNick, fieldPassword,confirmPasswordField,comboBoxGender,upload, buttonConfirmRegister,routerLinkLogin);
     }
-
-    //TODO zdjęcia avatara przenieść do bazy danych bo w pliku nie oddaje
-
     private void register(String userName, String password, String confirmPassword, byte [] imageBytes, String gender) {
         if(userName.trim().isEmpty()) {
             Notification.show("Enter Username");

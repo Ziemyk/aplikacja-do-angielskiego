@@ -1,0 +1,8 @@
+
+html {
+     --lumo-primary-color: green;
+     --lumo-font-family: Times;
+}
+body{
+    background-color: black;
+}

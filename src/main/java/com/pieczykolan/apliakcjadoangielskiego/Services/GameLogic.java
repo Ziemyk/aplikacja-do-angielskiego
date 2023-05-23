@@ -2,6 +2,7 @@ package com.pieczykolan.apliakcjadoangielskiego.Services;
 
 import com.pieczykolan.apliakcjadoangielskiego.View.Game;
 import com.pieczykolan.apliakcjadoangielskiego.model.User;
+import com.pieczykolan.apliakcjadoangielskiego.repo.GameSetupRepo;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.stream.Collectors;
 
 public class GameLogic  {
     private Game game ;
@@ -36,11 +38,13 @@ public class GameLogic  {
     private User user;
     private AuthService authService;
     private String nickName;
+    private GameSetupRepo gameSetupRepo;
 
-    public GameLogic(Game game, UI ui, AuthService authService) {
+    public GameLogic(Game game, UI ui, AuthService authService,GameSetupRepo gameSetupRepo) {
         this.game = game;
         this.ui = ui;
         this.authService = authService;
+        this.gameSetupRepo = gameSetupRepo;
         words = new ArrayList<>();
         user = VaadinSession.getCurrent().getAttribute(User.class);
 
@@ -136,8 +140,8 @@ public class GameLogic  {
 
     }
     public void startGame()   {
-        gameSettings = new GameSettings(game.getLevel());
-        words = gameSettings.numberOfWords(gameSettings.getLevel());
+        gameSettings = new GameSettings(game.getLevel(),game.getType(),gameSetupRepo);
+        words = gameSettings.numberOfWords(gameSettings.getLevel()).stream().map(gameSetup -> gameSetup.getWord()).collect(Collectors.toList());
         numberOfRounds = words.size();
         game.setProgressBar(0,numberOfRounds,0);
         for(int i=0 ;i<numberOfRounds; i++ ){

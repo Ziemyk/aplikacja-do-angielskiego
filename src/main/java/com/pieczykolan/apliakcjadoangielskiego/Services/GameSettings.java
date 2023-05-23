@@ -1,7 +1,11 @@
 package com.pieczykolan.apliakcjadoangielskiego.Services;
 
 import com.pieczykolan.apliakcjadoangielskiego.View.MainPage;
+import com.pieczykolan.apliakcjadoangielskiego.model.GameSetup;
+import com.pieczykolan.apliakcjadoangielskiego.model.LevelOfWord;
+import com.pieczykolan.apliakcjadoangielskiego.repo.GameSetupRepo;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,37 +15,28 @@ import java.util.TimerTask;
 public class GameSettings  {
 
     private int level;
+    private String type;
     private List<String> wordList ;
 
-    public GameSettings(int level){
+    private GameSetupRepo gameSetupRepo;
+
+    public GameSettings(int level, String type,GameSetupRepo gameSetupRepo){
         //MainPage mainPage = new MainPage();
         this.level = level;
+        this.type = type;
+        this.gameSetupRepo = gameSetupRepo;
         wordList = new ArrayList<>();
-        generateWord();
+
 
     }
 
-    public List<String> numberOfWords(int level){
-        List<String> chosenWords = new ArrayList<>();
-        Random random =  new Random();
-        for(int i=0;i<level*2;i++){
-            chosenWords.add(wordList.get(random.nextInt(wordList.size())));
-        }
+    public List<GameSetup> numberOfWords(int level){
+        List<GameSetup> chosenWords = new ArrayList<>();
+        chosenWords = gameSetupRepo.findAllByLevelOfWordAndTypeOfWord(LevelOfWord.values()[level],type);
+
         return chosenWords;
     }
-    public void generateWord(){
-        wordList.add("house");
-        wordList.add("can");
-        wordList.add("phone");
-        wordList.add("door");
-        wordList.add("picture");
-        wordList.add("water");
-        wordList.add("mouse");
-        wordList.add("laptop");
-        wordList.add("chair");
-        wordList.add("watch");
 
-    }
 
     public int getLevel() {
         return level;

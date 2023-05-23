@@ -5,6 +5,7 @@ import com.pieczykolan.apliakcjadoangielskiego.MainView.SecondsCounter;
 import com.pieczykolan.apliakcjadoangielskiego.Services.AuthService;
 import com.pieczykolan.apliakcjadoangielskiego.Services.GameLogic;
 
+import com.pieczykolan.apliakcjadoangielskiego.repo.GameSetupRepo;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -33,6 +34,9 @@ import java.util.List;
 public class Game extends VerticalLayout implements BeforeEnterObserver {
     private String chosenLevel;
     private int level;
+
+
+
     private String type;
     private Image hangmanImage = new Image();
     private Label labelHashPassword = new Label();
@@ -53,13 +57,15 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
     GameLogic gameLogic;
 
 
+
     @Autowired
-    public Game(AuthService authService) {
+    public Game(AuthService authService, GameSetupRepo gameSetupRepo) {
 //        secondsCounter.addCounterStopListener( e ->{
 //            int totalSeconds = e.getSource().getSeconds();
 //            System.out.println("Licznik zatrzymany po " + totalSeconds);
 //        });
-        gameLogic = new GameLogic(Game.this,ui,authService);
+
+        gameLogic = new GameLogic(Game.this,ui,authService,gameSetupRepo);
         keyboardComponent = new KeyboardComponent(gameLogic);
         setHangmanImage(0);
         progressBar.setValue(0);
@@ -99,7 +105,9 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
 
     }
 
-
+    public String getType() {
+        return type;
+    }
     public int getLevel() {
         return level;
     }

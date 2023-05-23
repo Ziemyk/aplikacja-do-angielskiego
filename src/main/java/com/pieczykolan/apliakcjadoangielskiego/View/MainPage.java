@@ -1,29 +1,40 @@
 package com.pieczykolan.apliakcjadoangielskiego.View;
 
+import com.pieczykolan.apliakcjadoangielskiego.MainView.MainLayout;
 import com.pieczykolan.apliakcjadoangielskiego.Services.AuthService;
+import com.pieczykolan.apliakcjadoangielskiego.model.LevelOfWord;
+import com.pieczykolan.apliakcjadoangielskiego.model.TypeOfWord;
 import com.pieczykolan.apliakcjadoangielskiego.model.User;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.shared.Tooltip;
+import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.theme.Theme;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.swing.*;
+import java.util.Optional;
 //@PageTitle("EnglishStudy")
 //@CssImport("./styles/shared-styles.css")
 
 
-@Route("EnglishStudy")
+@Route(value = "EnglishStudy")
+@CssImport("themes/my-theme/mainPageStyle.css")
 public class MainPage extends VerticalLayout  {
     private User user ;
     static public int level = 1;
+    public TypeOfWord type;
     public int getLevel() {
         return level;
     }
@@ -37,32 +48,19 @@ public class MainPage extends VerticalLayout  {
     public MainPage(AuthService authService)  {
         this.authService = authService;
         user = VaadinSession.getCurrent().getAttribute(User.class);
-        //getElement().getStyle().set("background","gray");
         add(userView(),lvlView());
-
-        //userView();
-        //lvlView();
     }
-//    public HorizontalLayout horizontallayout(){
-//       user = authService.updateData(user.getNickName());
-//       HorizontalLayout horizontalLayout = new HorizontalLayout();
-//       horizontalLayout.add(setLevelIcon("level" + user.getLevel() + ".png"),userView());
-//       setHorizontalComponentAlignment(Alignment.END,userView());
-//       //horizontalLayout.setSpacing(true);
-//       return horizontalLayout;
-//    }
+    public void showRouterLayoutContent(HasElement content){
 
+    }
     public VerticalLayout userView() {
         VerticalLayout verticalLayout = new VerticalLayout();
         user = authService.updateData(user.getNickName());
-        Notification.show("Hello " + user.getNickName()).setPosition(Notification.Position.TOP_STRETCH);
+        Notification.show("Hello " + user.getNickName()).setPosition(Notification.Position.TOP_START);
         Label labelName = new Label(user.getNickName());
         labelName.getStyle().set("font-weight","bold");
         Image image = authService.setImageFormDatabase(user.getId());
-        image.setHeight(200, Unit.PIXELS);
-        image.setWidth(200, Unit.PIXELS);
-
-
+        image.setClassName("avatar-image");
         Button buttonLogout = new Button("Log out");
         buttonLogout.addClickListener(e -> {
             UI.getCurrent().getPage().setLocation("/");
@@ -72,11 +70,10 @@ public class MainPage extends VerticalLayout  {
         Button buttonAchievements = new Button("My Achievements");
         Button buttonPlay = new Button("Play");
         buttonPlay.addClickListener(e ->{
-            UI.getCurrent().getPage().setLocation("Game/level/"+ level);
+            UI.getCurrent().getPage().setLocation("Game/type/"+ type.toString() +"/level/"+ level);
         });
         buttonPlay.addClickListener(e -> buttonAccount.setVisible(false));
         Image iconLevel = setLevelIcon("level" + user.getLevel() + ".png");
-        Tooltip tooltip ;
         HorizontalLayout horizontalLayoutIcons = new HorizontalLayout();
         horizontalLayoutIcons.add(iconLevel,image);
         HorizontalLayout horizontalLayoutButtons = new HorizontalLayout();
@@ -85,32 +82,39 @@ public class MainPage extends VerticalLayout  {
         setHorizontalComponentAlignment(Alignment.START,iconLevel);
         //setHorizontalComponentAlignment(Alignment.BASELINE, buttonLogout);
         setHorizontalComponentAlignment(Alignment.CENTER, buttonPlay);
-       // setLevelIcon("level" + user.getLevel() + ".png");
+        //setLevelIcon("level" + user.getLevel() + ".png");
         verticalLayout.add(horizontalLayoutButtons, horizontalLayoutIcons, labelName, buttonPlay);
+
         return verticalLayout;
     }
 
 
-    private Button createButton(int level){
+    private Button createButton(int level, int typeOfWord){
         Button button = new Button("Level" + level);
-        button.setHeight(80,Unit.PIXELS);
-        button.setWidth(200,Unit.PIXELS);
-        button.addClickListener(e -> this.level = level);
+        button.setHeight(50,Unit.PIXELS);
+        button.setWidth(120,Unit.PIXELS);
+        button.addClickListener(e -> {
+            this.level = level;
+            this.type = TypeOfWord.values()[typeOfWord];
+        });
         if(level > user.getLevel()) {
             button.setEnabled(false);
-
         }
         return button;
     }
-    private Scroller lvlView(){
+    private Scroller lvlView() {
         Section levelSection = new Section();
         levelSection.add(new H3("Levels"));
-        for(int i = 1;i <= 10; i++){
-            levelSection.add(createButton(i));
+        for (int typeOfWord = 0; typeOfWord < 4; typeOfWord++) {
+                levelSection.add(new Button(TypeOfWord.values()[typeOfWord].toString()));
+            for (int level = 1; level <= 5; level++) {
+                levelSection.add(createButton(level, typeOfWord));
+            }
         }
+        //TODO to zrobić pentle for dla tych typów słow czyli rzeczwonik, czasownik itp
         Scroller scrollerButtons = new Scroller(new Div(levelSection));
         scrollerButtons.setHeight(500,Unit.PIXELS);
-        scrollerButtons.setWidth(450,Unit.PIXELS);
+        scrollerButtons.setWidth(750,Unit.PIXELS);
         scrollerButtons.setScrollDirection(Scroller.ScrollDirection.VERTICAL);
         scrollerButtons.getStyle()
                 .set("border-bottom", "1px soli  d var(--lumo-contrast-20pct)")

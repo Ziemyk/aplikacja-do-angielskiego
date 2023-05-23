@@ -1,0 +1,69 @@
+.keyboard{
+    position: absolute;
+    left: 33%;
+    top: 60%;
+
+}
+
+.startButton{
+    position: absolute;
+    left: 1050px;
+    top:  235px;
+    width: 200px;
+    height: 100px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    color: black;
+}
+.progressBar{
+    position: absolute;
+    top: 650px;
+    left: 600px;
+    width: 300px;
+}
+.hangmanImage{
+    background-color: #7f7f7f;
+    position: absolute;
+    left: 540px;
+    top: 60px;
+}
+.labelHashPassword{
+    position:absolute;
+    left: 650px;
+    top: 320px;
+    font-size: 50px;
+    letter-spacing: 20px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    color: black;
+}
+.secondCounter{
+    position: absolute;
+    left: 1050px;
+    top: 100px;
+    background-color: hsla(214, 95%, 70%, 0.1);
+    border-color: #4285f4;
+    text-align: center;
+    width: 200px;
+    height: 40px;
+    border-radius: 10px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+
+}
+.buttonConfirmWord{
+    position: absolute;
+    left: 800px;
+    top: 420px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    color: black;
+}
+.textFieldLetter{
+    position: absolute;
+    left: 540px;
+    top: 387px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    color: black;
+}

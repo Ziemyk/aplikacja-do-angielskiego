@@ -1,5 +1,7 @@
 package com.pieczykolan.apliakcjadoangielskiego.View;
 
+import com.pieczykolan.apliakcjadoangielskiego.MainView.KeyboardComponent;
+import com.pieczykolan.apliakcjadoangielskiego.MainView.SecondsCounter;
 import com.pieczykolan.apliakcjadoangielskiego.Services.AuthService;
 import com.pieczykolan.apliakcjadoangielskiego.Services.GameLogic;
 
@@ -19,48 +21,53 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
+import org.atmosphere.config.service.EndpointMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 import java.util.List;
 
 
-@Route("Game/level/:chosenlevel")
+@Route("Game/type/:type/level/:chosenlevel")
+@CssImport("themes/my-theme/game.css")
 public class Game extends VerticalLayout implements BeforeEnterObserver {
     private String chosenLevel;
     private int level;
+    private String type;
     private Image hangmanImage = new Image();
     private Label labelHashPassword = new Label();
-    private Button buttonConfirmLetter = new Button("Confirm letter");
-    private Button  buttonConfirmWord = new Button("Confirm whole word");
-    private TextField textFieldLetter = new TextField("Letter");
+    private Button buttonConfirmWord = new Button("Confirm whole word");
+    private Button buttonNextWord = new Button("Next Word");
+    //TODO jest pomysł zeby zrobić przycisk po kliknieciu którego przechodzimy
+    // do odgadywania nastepnego słowa
+    HorizontalLayout horizontalLayoutForGuessedWords = new HorizontalLayout();
     private TextField textFieldWord =  new TextField("Entry the word");
     private Button startButton = new Button("Start");
     private ListBox<String> listBoxOfWords = new ListBox<>();
     private ProgressBar progressBar =  new ProgressBar();
-
+    private KeyboardComponent keyboardComponent;
+    private VerticalLayout verticalLayoutForGuessedWords = new VerticalLayout();
+    private SecondsCounter secondsCounter = new SecondsCounter();
     Label lvlLabel = new Label();
     UI ui = UI.getCurrent();
     GameLogic gameLogic;
+
+
     @Autowired
     public Game(AuthService authService) {
-        // verticalLayout = new VerticalLayout();
+//        secondsCounter.addCounterStopListener( e ->{
+//            int totalSeconds = e.getSource().getSeconds();
+//            System.out.println("Licznik zatrzymany po " + totalSeconds);
+//        });
         gameLogic = new GameLogic(Game.this,ui,authService);
+        keyboardComponent = new KeyboardComponent(gameLogic);
         setHangmanImage(0);
-        textFieldLetterSettings();
-        listBoxOfWords.setClassName("Guessed Words");
         progressBar.setValue(0);
+        setClassName();
         startButton.addClickListener(e -> {
+            secondsCounter.startCounter();
             gameLogic.startGame();
             startButton.setEnabled(false);
-        });
-        textFieldLetter.addKeyPressListener(Key.ENTER,keyPressEvent ->{
-            gameLogic.checkLetter(textFieldLetter.getValue());
-            textFieldLetter.clear();
-        });
-        buttonConfirmLetter.addClickListener(e -> {
-            gameLogic.checkLetter(textFieldLetter.getValue());
-            textFieldLetter.clear();
         });
         textFieldWord.addKeyPressListener(Key.ENTER,keyPressEvent ->{
             gameLogic.checkWord(textFieldWord.getValue());
@@ -72,17 +79,27 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
         });
 
         //verticalLayout.add(lvlLabel,hangmanImage,startButton);
-        add( lvlLabel, hLayoutHangmanAndListBox(), startButton,
-                textFieldLetter, labelHashPassword, buttonConfirmLetter,
-                textFieldWord,buttonConfirmWord, progressBar );
+        add( lvlLabel, hangmanImage, listBoxOfWords, startButton,
+                 labelHashPassword, textFieldWord,buttonConfirmWord,
+                progressBar, keyboardComponent, secondsCounter);
+
     }
     public void setClassName(){
         hangmanImage.setClassName("hangmanImage");
+        keyboardComponent.setClassName("keyboard");
+        secondsCounter.setClassName("secondCounter");
+        listBoxOfWords.setClassName("guessedWords");
+        startButton.setClassName("startButton");
+        lvlLabel.setClassName("lvlLabel");
+        labelHashPassword.setClassName("labelHashPassword");
+        buttonConfirmWord.setClassName("buttonConfirmWord");
+        progressBar.setClassName("progressBar");
+        textFieldWord.setClassName("textFieldLetter");
+        listBoxOfWords.setClassName("listBoxOfWords");
+
     }
 
-    public HorizontalLayout hLayoutHangmanAndListBox(){
-        return new HorizontalLayout(hangmanImage,listBoxOfWords);
-    }
+
     public int getLevel() {
         return level;
     }
@@ -91,11 +108,6 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
         progressBar.setMax(max);
         progressBar.setValue(value);
 
-    }
-    public void textFieldLetterSettings(){
-        textFieldLetter.setMinLength(1);
-        textFieldLetter.setMaxLength(1);
-        textFieldLetter.setWidth(35,Unit.PIXELS);
     }
     public String setHashPassword(int numberOfWords) {
         labelHashPassword.setText("");
@@ -122,9 +134,10 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
 
         chosenLevel = event.getRouteParameters().get("chosenlevel").orElse("1");
-        System.out.println(chosenLevel);
+        //System.out.println(chosenLevel);
         level = Integer.parseInt(chosenLevel);
-        lvlLabel.setText("Level " + level);
+        type = event.getRouteParameters().get("type").orElse("NOUN");
+        lvlLabel.setText("Level " + level + "type " + type);
     }
 
 
@@ -153,8 +166,6 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
     }
     public void disableComponents(){
         textFieldWord.setVisible(false);
-        textFieldLetter.setVisible(false);
-        buttonConfirmLetter.setVisible(false);
         buttonConfirmWord.setVisible(false);
         startButton.setVisible(false);
         labelHashPassword.setVisible(false);
@@ -175,7 +186,6 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
         dialogWin.setHeaderTitle("Lose");
         VerticalLayout verticalLayout = new VerticalLayout();
         Label labelLvl = new Label("Nie udało sie spróbuj ponownie.");
-        //Label labelWords = new Label(words.get(0) + " , " + words.get(1));
         verticalLayout.add(labelLvl);
         Button buttonTryAgain = new Button("Try Again",e -> passToTheSameLevel());
         Button buttonMenu = new Button("Menu", e -> UI.getCurrent().getPage().setLocation("EnglishStudy"));
@@ -191,7 +201,19 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
     }
 
     public void setListBoxOfWord(String guessedWord) {
-        listBoxOfWords.add(new Label(guessedWord));
+        //listBoxOfWords.add(new Label(guessedWord));
+        verticalLayoutForGuessedWords.add(guessedWord);
+        listBoxOfWords.add(verticalLayoutForGuessedWords);
+        //TODO chyba zrobimy to tak ze te słowa wpisze odrazu i przestawie je na disable i
+        // w momencie odgadnie przestawie na visible
 
+    }
+
+    public void restartTimer() {
+        secondsCounter.restartCounter();
+    }
+
+    public void stopTimer(){
+        secondsCounter.stopCounter();
     }
 }

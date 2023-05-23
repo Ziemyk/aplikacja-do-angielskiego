@@ -3,15 +3,17 @@ package com.pieczykolan.apliakcjadoangielskiego.Services;
 import com.pieczykolan.apliakcjadoangielskiego.View.Game;
 import com.pieczykolan.apliakcjadoangielskiego.model.User;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
-public class GameLogic   {
+public class GameLogic  {
     private Game game ;
     private GameSettings gameSettings;
     private String currentPassword;
@@ -31,18 +33,17 @@ public class GameLogic   {
         return currentIterationOfPassword;
     }
     private final UI ui;
-
     private User user;
+    private AuthService authService;
+    private String nickName;
 
-    private final AuthService authService;
-
-
-    @Autowired
     public GameLogic(Game game, UI ui, AuthService authService) {
         this.game = game;
         this.ui = ui;
         this.authService = authService;
         words = new ArrayList<>();
+        user = VaadinSession.getCurrent().getAttribute(User.class);
+
     }
     public void setCurrentIterationOfImage(int currentNumberOfImage) {
         this.currentIterationOfImage = currentNumberOfImage;
@@ -51,10 +52,8 @@ public class GameLogic   {
         }
     }
     private void endGame(boolean isWinOrLose) {
-        timer.cancel();
         if(isWinOrLose){
             earnedPoints++;
-            user = VaadinSession.getCurrent().getAttribute(User.class);
             authService.updateDatabase(game.getLevel()+1, user.getNickName());
             game.winView(words,earnedPoints);
 
@@ -62,9 +61,12 @@ public class GameLogic   {
             earnedPoints = 0;
             game.loseView(words,earnedPoints);
         }
+        timer.cancel();
+        game.stopTimer();
     }
-    public void checkWord(String value) {
-        if(value.equals(currentPassword)) {
+    public void checkWord(String word) {
+
+        if(word.equals(currentPassword)) {
             game.setListBoxOfWord(words.get(currentIterationOfPassword));
             currentIterationOfPassword++;
             game.setProgressBar(0, numberOfRounds, currentIterationOfPassword);
@@ -81,8 +83,8 @@ public class GameLogic   {
         }
     }
     public  void checkLetter(String guessLetter ) {
-
-        if(currentPassword == null || guessLetter == null ){
+        guessLetter.toLowerCase();
+        if(currentPassword == null || guessLetter == null || guessLetter.isEmpty()){
             return;
         }
         validateLetterWithPassword(guessLetter);
@@ -105,9 +107,9 @@ public class GameLogic   {
     }
 
     private void validateLetterWithPassword(String guessLetter) {
+        guessLetter = guessLetter.toLowerCase().toString();
         String tmpCurrentPassword = currentPassword.toLowerCase();
         if (tmpCurrentPassword.contains(guessLetter)) {
-
             for (int i = 0; i < tmpCurrentPassword.length(); i++) {
                 if (tmpCurrentPassword.charAt(i) == guessLetter.charAt(0)) {
                     char[] myNameChars = currentHashPassword.toCharArray();
@@ -130,6 +132,8 @@ public class GameLogic   {
         timer.purge();
         timer = new Timer();
         timer.scheduleAtFixedRate(new Reminder(ui,game,this), delay, period);
+        game.restartTimer();
+
     }
     public void startGame()   {
         gameSettings = new GameSettings(game.getLevel());

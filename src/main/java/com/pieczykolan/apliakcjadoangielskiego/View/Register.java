@@ -1,10 +1,10 @@
 package com.pieczykolan.apliakcjadoangielskiego.View;
 
+import com.pieczykolan.apliakcjadoangielskiego.MainView.MainLayout;
 import com.pieczykolan.apliakcjadoangielskiego.Services.AuthService;
 import com.pieczykolan.apliakcjadoangielskiego.model.Gender;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -23,7 +23,7 @@ import java.io.*;
 import java.nio.file.*;
 
 
-@Route("Register")
+@Route(value = "Register",layout = MainLayout.class)
 public class Register extends VerticalLayout {
 
     private final AuthService authService ;

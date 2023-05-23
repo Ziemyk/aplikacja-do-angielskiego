@@ -19,7 +19,6 @@ public class GameSettings  {
         wordList = new ArrayList<>();
         generateWord();
 
-
     }
 
     public List<String> numberOfWords(int level){

@@ -1,8 +1,32 @@
 
 html {
-     --lumo-primary-color: green;
-     --lumo-font-family: Times;
+     --lumo-primary-color: red;
+     --lumo-base-color: white;
+     --lumo-border-radius: 10px;
+
 }
 body{
-    background-color: black;
+    background-color: gray;
+    border-radius: 5px;
+    horiz-align: center;
 }
+vaadin-button{
+    border-radius: 5px;
+
+}
+vaadin-horizontal-layout{
+    align-self: center;
+}
+.router-link{
+   position: absolute;
+   align-self: center;
+   top : 57%;
+
+
+}
+
+vaadin-login-form-wrapper {
+    border-radius: 10px;
+    align-self: center;
+}
+

@@ -1,0 +1,19 @@
+html {
+    --lumo-primary-color: red;
+    --lumo-base-color: white;
+    --lumo-border-radius: 10px;
+
+
+}
+.avatar-image{
+    position: absolute;
+    top: 5%;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    mso-title-page: yes;
+}
+h1{
+
+
+}

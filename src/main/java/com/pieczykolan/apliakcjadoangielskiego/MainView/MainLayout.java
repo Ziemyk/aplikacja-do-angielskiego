@@ -1,20 +1,24 @@
-package com.pieczykolan.apliakcjadoangielskiego.View;
+package com.pieczykolan.apliakcjadoangielskiego.MainView;
 
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;
 
-@Theme("my-theme")
+@CssImport("themes/my-theme/styles.css")
 public class MainLayout extends AppLayout implements AppShellConfigurator {
 
-    private H1 viewTitle = new H1("Siema");
+    private H1 viewTitle = new H1("English Study");
 
     public MainLayout(){
-        HorizontalLayout header = new HorizontalLayout(viewTitle);
-        header.setWidth("100%");
-        addToNavbar(header);
+        //HorizontalLayout header = new HorizontalLayout(viewTitle);
+
+        viewTitle.setWidth("100%");
+        addToNavbar(viewTitle);
+
     }
+
 
 }

@@ -71,7 +71,15 @@
             <version>13.0</version>
             <scope>compile</scope>
         </dependency>
-
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-board-flow</artifactId>
+			<version>23.3.6</version>
+		</dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
 
 
     </dependencies>

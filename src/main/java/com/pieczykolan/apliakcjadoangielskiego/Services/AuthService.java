@@ -1,8 +1,9 @@
 package com.pieczykolan.apliakcjadoangielskiego.Services;
 
+import com.pieczykolan.apliakcjadoangielskiego.model.LevelsEntity;
 import com.pieczykolan.apliakcjadoangielskiego.model.User;
+import com.pieczykolan.apliakcjadoangielskiego.repo.LevelsRepo;
 import com.pieczykolan.apliakcjadoangielskiego.repo.UserRepo;
-import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
@@ -15,17 +16,19 @@ import java.io.ByteArrayInputStream;
 public class AuthService {
 
     private final UserRepo userRepo;
+    private final LevelsRepo levelsRepo;
     
     @Autowired
-    public AuthService(UserRepo userRepo) {
+    public AuthService(UserRepo userRepo, LevelsRepo levelsRepo) {
         this.userRepo = userRepo;
+        this.levelsRepo = levelsRepo;
     }
 
     /*public void authenticate(String username, String password) throws AuthException{
         userRepo.
     }*/
     public void addUser(String userName, String password, byte [] imageBytes, String gender) {
-        User user = new User(userName, password, imageBytes, gender,1);
+        User user = new User(userName, password, imageBytes, gender);
         userRepo.save(user);
 
     }
@@ -46,8 +49,10 @@ public class AuthService {
         return false;
     }
 
-    public void updateDatabase(int i, String nickName) {
-        userRepo.updateLevelByNickName(i, nickName);
+    public void updateLevelsEntity(int userId, LevelsEntity levels) {
+        levelsRepo.updateLevelByUserId(levels,userId);
+
+
     }
 
     public User updateData(String userName) {

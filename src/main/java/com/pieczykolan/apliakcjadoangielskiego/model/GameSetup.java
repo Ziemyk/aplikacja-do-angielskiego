@@ -15,6 +15,15 @@ public class GameSetup {
     @Basic(fetch = FetchType.LAZY)
     private byte [] wordIcon;
     private String typeOfWord;
+
+    public String getTranslateWord() {
+        return translateWord;
+    }
+
+    public void setTranslateWord(String translateWord) {
+        this.translateWord = translateWord;
+    }
+
     private String translateWord;
     private LevelOfWord levelOfWord;
     public GameSetup(){

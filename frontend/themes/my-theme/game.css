@@ -1,46 +1,51 @@
-.keyboard{
-    position: absolute;
-    left: 33%;
-    top: 60%;
+
+.hangmanImage {
+    align-content: center;
+    #position: relative;
+    #left: 15%;
+    border-radius: 10px;
+    width: 75%;
+    max-width: 500px;
+    height: 75%;
+    background-color: #650acc;
 
 }
+.header{
+    align-self: center;
+}
+.h1{
+    text-align: center;
+    align-self: center;
+}
+.iconOfWord{
+    border-radius: 10px;
+    width: 24%;
+    max-width: 300px;
+    height: 24%;
+    background-color: #650acc;
+    #position: relative;
+    #left: 2%;
+}
+.horizontalLayout{
+    border-color: #650acc;
+    border-width: 10px;
+    #position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    #flex-wrap: wrap;
+    justify-content: space-around;
 
-.startButton{
-    position: absolute;
-    left: 1050px;
-    top:  235px;
-    width: 200px;
-    height: 100px;
-    font-family: "Comic Sans MS";
-    font-weight: bold;
-    color: black;
 }
-.progressBar{
-    position: absolute;
-    top: 650px;
-    left: 600px;
-    width: 300px;
-}
-.hangmanImage{
-    background-color: #7f7f7f;
-    position: absolute;
-    left: 540px;
-    top: 60px;
-}
-.labelHashPassword{
-    position:absolute;
-    left: 650px;
-    top: 320px;
-    font-size: 50px;
-    letter-spacing: 20px;
-    font-family: "Comic Sans MS";
-    font-weight: bold;
-    color: black;
+.verticalLayoutForStartAndTimer{
+    width: 300px !important;
+    margin-left: 0px !important;
+    padding-left: 0px !important;
 }
 .secondCounter{
-    position: absolute;
-    left: 1050px;
-    top: 100px;
+    position: relative;
+    #left: 5%;
+    top: 30px;
     background-color: hsla(214, 95%, 70%, 0.1);
     border-color: #4285f4;
     text-align: center;
@@ -49,21 +54,70 @@
     border-radius: 10px;
     font-family: "Comic Sans MS";
     font-weight: bold;
-
 }
+.startButton{
+    #align-self: center;
+    position: relative;
+    #left: 5%;
+    top:  120px;
+    width: 200px;
+    height: 100px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    color: black;
+}
+
+.labelHashPassword{
+    align-self: center;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    width: 600px;
+    font-size: 50px;
+    text-align: center;
+    letter-spacing: 20px;
+    initial-letter: normal;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    border-radius: 10px;
+    border-width: 20px;
+    border-color: #4285f4;
+    color: black;
+    #background-color: #7f7f7f;
+}
+
 .buttonConfirmWord{
-    position: absolute;
-    left: 800px;
-    top: 420px;
+    position: relative;
+    #left: 100px;
+    top: 33px;
     font-family: "Comic Sans MS";
     font-weight: bold;
     color: black;
 }
 .textFieldLetter{
-    position: absolute;
-    left: 540px;
-    top: 387px;
+    position: relative;
+    #left: 540px;
+    #top: 450px;
     font-family: "Comic Sans MS";
     font-weight: bold;
     color: black;
+}
+.horizontalLayoutForTextAndButton{
+    align-content: center;
+    width: 500px;
+    display: flex;
+    flex-direction: row;
+    #flex-wrap: wrap;
+    justify-content: space-around;
+}
+.keyboard{
+    align-self: center;
+    position: relative;
+}
+.progressBar{
+    align-self: center;
+    position: relative;
+    top: 10px;
+    width: 300px;
+    margin-bottom: 0px;
 }

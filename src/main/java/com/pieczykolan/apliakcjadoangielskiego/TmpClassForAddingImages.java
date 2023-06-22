@@ -77,4 +77,5 @@ public class TmpClassForAddingImages extends VerticalLayout {
         add(upload,textField,textFieldWithTranslate, comboBoxTypeOfWord,comboBoxLevelOfWord,buttonConfirm);
 
     }
+    //TODO dodac zdjęcia , poprawić wygląd strony , poprawic wygląd wyboru levela i zrobić ta tablice wyników
 }

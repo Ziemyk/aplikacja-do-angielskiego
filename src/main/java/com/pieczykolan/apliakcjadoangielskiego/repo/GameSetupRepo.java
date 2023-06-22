@@ -13,6 +13,7 @@ public interface GameSetupRepo extends CrudRepository<GameSetup, Integer> {
     GameSetup getBytypeOfWord(String type);
     GameSetup getFirstBytypeOfWord(String type);
     List<GameSetup> findAllByLevelOfWordAndTypeOfWord(LevelOfWord level, String type);
+    List<GameSetup> findAllByLevelOfWordLessThanEqualAndTypeOfWord(LevelOfWord level, String type);
 
-
+    //List<GameSetup> GetRandomByLevelOfWordLessThanEqualAndTypeOfWord(LevelOfWord level, String type);
 }

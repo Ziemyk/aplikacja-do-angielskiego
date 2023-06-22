@@ -20,7 +20,6 @@ public class User  {
     private byte [] imageBytes;
     private Gender gender;
     private String passwordHash;
-    private int level;
     public User() {
         super();
     }
@@ -45,7 +44,7 @@ public class User  {
         this.passwordHash = passwordHash;
     }
 
-    public User(String nickName, String password, byte [] imageBytes, String gender, int level) {
+    public User(String nickName, String password, byte [] imageBytes, String gender) {
 
         this.nickName = nickName;
         this.password = password;
@@ -53,7 +52,7 @@ public class User  {
         this.passwordHash = DigestUtils.sha1Hex(password + passwordSalt);
         this.imageBytes = imageBytes;
         this.gender = Gender.valueOf(gender);
-        this.level = level;
+
     }
 
     public int getId() {
@@ -96,14 +95,6 @@ public class User  {
 
     public void setGender(String gender) {
         this.gender = Gender.valueOf(gender);
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 
     public boolean checkPassword(String password) {

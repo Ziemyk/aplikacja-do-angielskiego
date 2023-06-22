@@ -13,8 +13,7 @@ import java.util.Optional;
 public interface UserRepo extends CrudRepository<User, Integer> {
     @Transactional
     @Modifying
-    @Query("update User u set u.level = ?1 where u.nickName = ?2")
-    int updateLevelByNickName(int level, String nickName);
+
 
 
     User getBynickName(String username);

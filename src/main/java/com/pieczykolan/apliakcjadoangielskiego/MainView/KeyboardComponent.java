@@ -18,6 +18,8 @@ import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.annotation.Native;
+import java.util.ArrayList;
+import java.util.List;
 
 @Tag("my-vaadin-component")
 @JsModule("./virtualKeyboard.ts")
@@ -25,7 +27,11 @@ public class KeyboardComponent extends LitTemplate {
 
     GameLogic gameLogic;
     UI ui = UI.getCurrent();
+    static private List<NativeButton> buttons = new ArrayList<>();
 
+
+    @Id("button0")
+    private NativeButton button0;
     @Id("button1")
     public NativeButton button1;
     @Id("button2")
@@ -76,78 +82,82 @@ public class KeyboardComponent extends LitTemplate {
     public NativeButton button24;
     @Id("button25")
     public NativeButton button25;
-    @Id("button0")
-    private NativeButton button0;
 
     public KeyboardComponent(GameLogic gameLogic) {
-
+        button0.setText("Q");
+        button1.setText("W");
+        button2.setText("E");
+        button3.setText("R");
+        button4.setText("T");
+        button5.setText("Y");
+        button6.setText("U");
+        button7.setText("I");
+        button8.setText("O");
+        button9.setText("P");
+        button10.setText("A");
+        button11.setText("S");
+        button12.setText("D");
+        button13.setText("F");
+        button14.setText("G");
+        button15.setText("H");
+        button16.setText("J");
+        button17.setText("K");
+        button18.setText("L");
+        button19.setText("Z");
+        button20.setText("X");
+        button21.setText("C");
+        button22.setText("V");
+        button23.setText("B");
+        button24.setText("N");
+        button25.setText("M");
+        buttons.add(button0);
+        buttons.add(button1);
+        buttons.add(button2);
+        buttons.add(button3);
+        buttons.add(button4);
+        buttons.add(button5);
+        buttons.add(button6);
+        buttons.add(button7);
+        buttons.add(button8);
+        buttons.add(button9);
+        buttons.add(button10);
+        buttons.add(button11);
+        buttons.add(button12);
+        buttons.add(button13);
+        buttons.add(button14);
+        buttons.add(button15);
+        buttons.add(button16);
+        buttons.add(button17);
+        buttons.add(button18);
+        buttons.add(button19);
+        buttons.add(button20);
+        buttons.add(button21);
+        buttons.add(button22);
+        buttons.add(button23);
+        buttons.add(button24);
+        buttons.add(button25);
         this.gameLogic = gameLogic;
         addAttachListener(attachEvent -> {
             // view is loaded at this point. You can for example execute javascript which relies on certain elements being in the page
-            button0.setText("Q");
-            button1.setText("W");
-            button2.setText("E");
-            button3.setText("R");
-            button4.setText("T");
-            button5.setText("Y");
-            button6.setText("U");
-            button7.setText("I");
-            button8.setText("O");
-            button9.setText("P");
-            button10.setText("A");
-            button11.setText("S");
-            button12.setText("D");
-            button13.setText("F");
-            button14.setText("G");
-            button15.setText("H");
-            button16.setText("J");
-            button17.setText("K");
-            button18.setText("L");
-            button19.setText("Z");
-            button20.setText("X");
-            button21.setText("C");
-            button22.setText("V");
-            button23.setText("B");
-            button24.setText("N");
-            button25.setText("M");
-            button0.addClickListener(e -> checkLetter(button0.getText()));
-            button1.addClickListener(e -> checkLetter(button1.getText()));
-            button2.addClickListener(e -> checkLetter(button2.getText()));
-            button3.addClickListener(e -> checkLetter(button3.getText()));
-            button4.addClickListener(e -> checkLetter(button4.getText()));
-            button5.addClickListener(e -> checkLetter(button5.getText()));
-            button6.addClickListener(e -> checkLetter(button6.getText()));
-            button7.addClickListener(e -> checkLetter(button7.getText()));
-            button8.addClickListener(e -> checkLetter(button8.getText()));
-            button9.addClickListener(e -> checkLetter(button9.getText()));
-            button10.addClickListener(e -> checkLetter(button10.getText()));
-            button11.addClickListener(e -> checkLetter(button11.getText()));
-            button12.addClickListener(e -> checkLetter(button12.getText()));
-            button13.addClickListener(e -> checkLetter(button13.getText()));
-            button14.addClickListener(e -> checkLetter(button14.getText()));
-            button15.addClickListener(e -> checkLetter(button15.getText()));
-            button16.addClickListener(e -> checkLetter(button16.getText()));
-            button17.addClickListener(e -> checkLetter(button17.getText()));
-            button18.addClickListener(e -> checkLetter(button18.getText()));
-            button19.addClickListener(e -> checkLetter(button19.getText()));
-            button20.addClickListener(e -> checkLetter(button20.getText()));
-            button21.addClickListener(e -> checkLetter(button21.getText()));
-            button22.addClickListener(e -> checkLetter(button22.getText()));
-            button23.addClickListener(e -> checkLetter(button23.getText()));
-            button24.addClickListener(e -> checkLetter(button24.getText()));
-            button25.addClickListener(e -> checkLetter(button25.getText()));
-
-
-
+            for (int i=0;i<26;i++) {
+                buttons.get(i).addClickListener(e -> checkLetter(e.getSource()));
+            }
         });
    }
 
-    private void checkLetter(String letter) {
+    private void checkLetter(NativeButton button) {
+        String letter = button.getText();
+        button.setEnabled(false);
         gameLogic.checkLetter(letter);
-        System.out.println(letter);
 
 
     }
+    public void restartKeyboard(){
+        for (NativeButton b: buttons) {
+            b.setEnabled(true);
+        }
+    }
+    // TODO ostatni wciśniety przcisk przed zgadnięciem sie nie odswieza
 
 
 }

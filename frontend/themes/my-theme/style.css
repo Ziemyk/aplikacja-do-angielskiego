@@ -10,6 +10,7 @@ body{
     border-radius: 5px;
     horiz-align: center;
 }
+
 vaadin-button{
     border-radius: 5px;
 
@@ -24,7 +25,6 @@ vaadin-horizontal-layout{
 
 
 }
-
 vaadin-login-form-wrapper {
     border-radius: 10px;
     align-self: center;

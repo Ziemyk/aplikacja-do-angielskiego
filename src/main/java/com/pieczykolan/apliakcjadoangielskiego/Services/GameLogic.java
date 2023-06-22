@@ -1,13 +1,11 @@
 package com.pieczykolan.apliakcjadoangielskiego.Services;
 
 import com.pieczykolan.apliakcjadoangielskiego.View.Game;
+import com.pieczykolan.apliakcjadoangielskiego.model.GameSetup;
 import com.pieczykolan.apliakcjadoangielskiego.model.User;
 import com.pieczykolan.apliakcjadoangielskiego.repo.GameSetupRepo;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
@@ -21,7 +19,10 @@ public class GameLogic  {
     private String currentPassword;
     private String currentHashPassword;
     private int currentIterationOfPassword = 0;
+    static private List<GameSetup> listGameSetup;
     static private List<String> words  ;
+    static private List<byte []> iconsOfWords;
+    static private List<String> translateWord;
     private int delay = 15000, period = 15000;
     private int currentIterationOfImage = 0;
     Timer timer = new Timer();
@@ -58,7 +59,7 @@ public class GameLogic  {
     private void endGame(boolean isWinOrLose) {
         if(isWinOrLose){
             earnedPoints++;
-            authService.updateDatabase(game.getLevel()+1, user.getNickName());
+            //authService.updateDatabase(game.getLevel()+1, user.getNickName());
             game.winView(words,earnedPoints);
 
         }else{
@@ -107,7 +108,10 @@ public class GameLogic  {
     private void nextWord() {
         currentPassword = words.get(currentIterationOfPassword).toLowerCase();
         currentHashPassword = game.setHashPassword(currentPassword.length()).toLowerCase();
-        timer.scheduleAtFixedRate(new Reminder(ui,game,this), delay, period );
+        game.setWordIcon(iconsOfWords.get(currentIterationOfPassword));
+        restartTimer();
+        game.setVirtualKeyboard();
+
     }
 
     private void validateLetterWithPassword(String guessLetter) {
@@ -141,7 +145,10 @@ public class GameLogic  {
     }
     public void startGame()   {
         gameSettings = new GameSettings(game.getLevel(),game.getType(),gameSetupRepo);
-        words = gameSettings.numberOfWords(gameSettings.getLevel()).stream().map(gameSetup -> gameSetup.getWord()).collect(Collectors.toList());
+        listGameSetup = gameSettings.getGameSetup(game.getLevel());
+        words = listGameSetup.stream().map(gameSetup -> gameSetup.getWord()).collect(Collectors.toList());
+        iconsOfWords = listGameSetup.stream().map(gameSetup -> gameSetup.getWordIcon()).collect(Collectors.toList());
+        translateWord = listGameSetup.stream().map(gameSetup -> gameSetup.getTranslateWord()).collect(Collectors.toList());
         numberOfRounds = words.size();
         game.setProgressBar(0,numberOfRounds,0);
         for(int i=0 ;i<numberOfRounds; i++ ){

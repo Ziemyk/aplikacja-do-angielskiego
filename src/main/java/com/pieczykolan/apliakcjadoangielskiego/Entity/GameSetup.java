@@ -1,4 +1,6 @@
-package com.pieczykolan.apliakcjadoangielskiego.model;
+package com.pieczykolan.apliakcjadoangielskiego.Entity;
+
+import com.pieczykolan.apliakcjadoangielskiego.model.LevelOfWord;
 
 import javax.persistence.*;
 

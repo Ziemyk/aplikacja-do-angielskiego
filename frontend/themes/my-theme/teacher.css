@@ -1,0 +1,26 @@
+.combo-box{
+    position: relative;
+    align-content: center;
+}
+.chart{
+    width: 50%;
+    height: 350px;
+    border-radius: 5%;
+    background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
+    opacity: 0.8;
+    font-family: "Comic Sans MS";
+
+
+}
+.horizontalForCharts{
+    width: 1200px;
+    margin: 0px;
+
+}
+.verticalAddStudents{
+    width: 16% !important;
+}
+.title{
+    position: relative;
+    right: -10%;
+}

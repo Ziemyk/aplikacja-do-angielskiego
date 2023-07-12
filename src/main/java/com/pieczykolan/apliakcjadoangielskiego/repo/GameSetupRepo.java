@@ -1,8 +1,7 @@
 package com.pieczykolan.apliakcjadoangielskiego.repo;
 
-import com.pieczykolan.apliakcjadoangielskiego.model.GameSetup;
+import com.pieczykolan.apliakcjadoangielskiego.Entity.GameSetup;
 import com.pieczykolan.apliakcjadoangielskiego.model.LevelOfWord;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,23 +1,13 @@
-package com.pieczykolan.apliakcjadoangielskiego.MainView;
+package com.pieczykolan.apliakcjadoangielskiego.Component;
 
-import com.pieczykolan.apliakcjadoangielskiego.Services.AuthService;
-import com.pieczykolan.apliakcjadoangielskiego.Services.GameLogic;
-import com.pieczykolan.apliakcjadoangielskiego.View.Game;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasComponents;
+
+import com.pieczykolan.apliakcjadoangielskiego.GameService.GameLogic;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.littemplate.LitTemplate;
 import com.vaadin.flow.component.template.Id;
-import org.aspectj.weaver.ast.Var;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.lang.annotation.Native;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +17,7 @@ public class KeyboardComponent extends LitTemplate {
 
     GameLogic gameLogic;
     UI ui = UI.getCurrent();
-    static private List<NativeButton> buttons = new ArrayList<>();
+    private List<NativeButton> buttons = new ArrayList<>();
 
 
     @Id("button0")
@@ -82,7 +72,7 @@ public class KeyboardComponent extends LitTemplate {
     public NativeButton button24;
     @Id("button25")
     public NativeButton button25;
-
+    public int test = 0;
     public KeyboardComponent(GameLogic gameLogic) {
         button0.setText("Q");
         button1.setText("W");
@@ -141,6 +131,7 @@ public class KeyboardComponent extends LitTemplate {
             // view is loaded at this point. You can for example execute javascript which relies on certain elements being in the page
             for (int i=0;i<26;i++) {
                 buttons.get(i).addClickListener(e -> checkLetter(e.getSource()));
+                buttons.get(i).addClickListener(e -> System.out.println(e.getSource()));
             }
         });
    }

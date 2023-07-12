@@ -7,40 +7,168 @@ html {
 
 
 }
+
 .vertical-user-view{
-    height: 250px;
+    height: 270px;
+    width: 400px !important;
     background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
     border-radius: 5%;
     opacity: 0.8;
+    position: relative;
+    left: 1% ;
 }
+
 .avatar-image{
     position: relative;
     #top: 5%;
     width: 70px;
     height: 70px;
-    #right: 5%;
+    left: 15%;
     border-radius: 50%;
-    mso-title-page: yes;
+    /*mso-title-page: yes;*/
+
+
 }
 h1{
     align-content: center;
     position: relative;
+    width: 100%;
 
+}
+vaadin-custom-field::part(cell header-cell){
+    width: 70px;
+}
+.vaadin-grid-sorter{
+    width: 50px;
+}
+.label-type{
+    font-family: "Comic Sans MS";
+    /*padding-right: 30px;*/
+    /*padding-left: 0px;*/
+    /*left:0px;*/
+    font-size: 15px;
+    /*width: 80%;*/
+    width: 120px;
+    text-align: center;
+    color: black;
 }
 .icon-level{
     position: relative;
-    left: 20%;
+    left: 10%;
     width: 25px;
     height: 25px;
 
-
 }
 .button-logout {
-    position: relative;
-    right: 20px;
+    position: absolute;
+    right: 5%;
+    top: 35%;
     width: 10%;
-    height: 10%;
+    height: 40%;
+    color: black;
 }
+.button-play{
+    position: absolute;
+    top: 63%;
+    left: 68%;
+    width: 100px;
+    height: 100px;
+    color: black;
+}
+
 .label-name{
+    position: relative;
     font-size: 30px;
+    font-family: "Comic Sans MS";
+    color: black;
+    top: 20%;
+    right: 5%;
+}
+vaadin-crud{
+    /*position: absolute;*/
+    /*top: 40%;*/
+    /*left: 30%;*/
+    /*min-height: 300px;*/
+    /*display: flex;*/
+    /*flex-direction: row;*/
+    position: relative;
+    right: 0%;
+    width: 1040px !important;
+    /*max-height:400px !important;*/
+    border-radius: 20px;
+    background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
+    opacity: 0.8;
+}
+vaadin-grid{
+    width: 1050px !important;
+}
+vaadin-grid-sorter{
+    width: 100% !important;
+}
+.user-avatar-crud{
+    border-radius: 50%;
+    width: 40px;
+
+}
+vaadin-grid-cell-content{
+    /*position: relative;*/
+    align-content: center;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    font-size: 18px;
+}
+table{
+    background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
+    opacity: 0.8;
+    width: 800px !important;
+}
+
+.cellText{
+    font-family: "Comic Sans MS";
+    text-align: center;
+    /*width: 300px!important;*/
+}
+vaadin-grid-cell-content{
+    width: 160px !important;
+}
+.level-button{
+    --lumo-primary-text-color: black;
+    /*font-family: "Comic Sans MS";*/
+    /*background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));*/
+    /*background-color: gray;*/
+    opacity: 1;
+    //border: solid black;
+    /*text-shadow: 1px 1px dodgerblue;*/
+    /*color: black;*/
+
+}
+.verticalForChosen{
+    width: 350px !important;
+    position: absolute;
+    left: 2.5%;
+    top:65%;
+    text-align: center;
+    background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
+    opacity: 0.8;
+    border-radius: 10px;
+
+}
+.labelChosenType{
+    width: 300px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    text-align: center;
+}
+.labelChosenLevel{
+    width: 300px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    text-align: center;
+}
+.horizontal-board-level{
+    align-content: center;
+    width: 500px;
+}
+.verticalLayoutRegister{
+
 }

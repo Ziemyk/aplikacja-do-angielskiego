@@ -1,71 +1,71 @@
-html {
-    --lumo-primary-color: red;
-    --lumo-base-color: white;
-    --lumo-border-radius: 10px;
+/*html {*/
+/*    --lumo-primary-color: red;*/
+/*    --lumo-base-color: white;*/
+/*    --lumo-border-radius: 10px;*/
 
-}
-h1{
-    #display: flex;
-    #flex-direction:row;
-    position: relative;
-    position: relative;
-    text-align: center;
-    #align-items: end;
-    width: 50vh;
-    #padding-right: 20px;
+/*}*/
+/*h1{*/
+/*    #display: flex;*/
+/*    #flex-direction:row;*/
+/*    position: relative;*/
+/*    position: relative;*/
+/*    text-align: center;*/
+/*    #align-items: end;*/
+/*    width: 50vh;*/
+/*    #padding-right: 20px;*/
 
-}
-.button-login{
-    #position: relative;
-    #left: 50px;
-    #top: 30%;
-    width: 100px;
-    display: flex;
-
-
-}
-.button-register{
-    width: 100px;
-    position: relative;
-    left: 100px;
-    top: 30%;
-}
-
-vaadin-button{
-    horiz-align:center;
-}
-body{
-    horiz-align: center;
-
-}
-.text-area1{
-    align-self: center;
-}
-.text-area2{
-    align-self: end;
-    border: #650acc;
-    color: white;
+/*}*/
+/*.button-login{*/
+/*    #position: relative;*/
+/*    #left: 50px;*/
+/*    #top: 30%;*/
+/*    width: 100px;*/
+/*    display: flex;*/
 
 
-}
-.horizontal-layout{
-    width: 800px;
-    height: 600px;
-    background-image: url("zdj_do_strony.png");
+/*}*/
+/*.button-register{*/
+/*    width: 100px;*/
+/*    position: relative;*/
+/*    left: 100px;*/
+/*    top: 30%;*/
+/*}*/
 
-    background-size: inherit;
-}
-vaadin-horizontal-layout{
-    background: url(zdj_do_strony.png);
-}
-div{
-    right: 200px;
-    top: 300px;
-}
-htmlComponent.virtual-keyboard{
+/*vaadin-button{*/
+/*    horiz-align:center;*/
+/*}*/
+/*body{*/
+/*    horiz-align: center;*/
 
-    position: fixed;
-    color:transparent;
-}
+/*}*/
+/*.text-area1{*/
+/*    align-self: center;*/
+/*}*/
+/*.text-area2{*/
+/*    align-self: end;*/
+/*    border: #650acc;*/
+/*    color: white;*/
+
+
+/*}*/
+/*.horizontal-layout{*/
+/*    width: 800px;*/
+/*    height: 600px;*/
+/*    background-image: url("zdj_do_strony.png");*/
+
+/*    background-size: inherit;*/
+/*}*/
+/*vaadin-horizontal-layout{*/
+/*    background: url(zdj_do_strony.png);*/
+/*}*/
+/*div{*/
+/*    right: 200px;*/
+/*    top: 300px;*/
+/*}*/
+/*htmlComponent.virtual-keyboard{*/
+
+/*    position: fixed;*/
+/*    color:transparent;*/
+/*}*/
 
 

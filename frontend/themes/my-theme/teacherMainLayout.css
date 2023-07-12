@@ -1,0 +1,17 @@
+.avatarImage{
+    border-radius: 50%;
+    width: 50px;
+    position: relative;
+    right:5%;
+}
+.labelNickName{
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    position: relative;
+    right:6% !important;
+}
+.buttonLogout{
+    width: 200px;
+    position: relative;
+    right: 2%;
+}

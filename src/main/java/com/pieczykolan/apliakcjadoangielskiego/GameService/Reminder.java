@@ -1,9 +1,7 @@
-package com.pieczykolan.apliakcjadoangielskiego.Services;
+package com.pieczykolan.apliakcjadoangielskiego.GameService;
 
 import com.pieczykolan.apliakcjadoangielskiego.View.Game;
 import com.vaadin.flow.component.UI;
-
-import java.util.Timer;
 import java.util.TimerTask;
 
 public class Reminder extends TimerTask {

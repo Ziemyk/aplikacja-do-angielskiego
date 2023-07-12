@@ -1,6 +1,6 @@
-package com.pieczykolan.apliakcjadoangielskiego.Services;
+package com.pieczykolan.apliakcjadoangielskiego.GameService;
 
-import com.pieczykolan.apliakcjadoangielskiego.model.GameSetup;
+import com.pieczykolan.apliakcjadoangielskiego.Entity.GameSetup;
 import com.pieczykolan.apliakcjadoangielskiego.model.LevelOfWord;
 import com.pieczykolan.apliakcjadoangielskiego.repo.GameSetupRepo;
 

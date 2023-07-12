@@ -1,40 +1,50 @@
+.appLayout{
+    align-sefl: center;
+}
 
-.hangmanImage {
-    align-content: center;
-    #position: relative;
-    #left: 15%;
-    border-radius: 10px;
-    width: 75%;
-    max-width: 500px;
-    height: 75%;
-    background-color: #650acc;
-
+.lvlLabel{
+    position: absolute;
+    font-family: "Comic Sans MS";
+    font-size: 120%;
+    font-weight: bold;
 }
 .header{
     align-self: center;
+    width: 100%;
+    font-family: "Comic Sans MS";
 }
+.hangmanImage {
+    align-content: center;
+    border-radius: 10px;
+    width: 65%;
+    max-width: 500px;
+    /*border: solid black;*/
+    border-width: 2px;
+    background-color: black ;
+    opacity:0.8;
+
+}
+
 .h1{
-    text-align: center;
-    align-self: center;
+    font-family: "Comic Sans MS";
 }
 .iconOfWord{
     border-radius: 10px;
     width: 24%;
     max-width: 300px;
-    height: 24%;
-    background-color: #650acc;
-    #position: relative;
-    #left: 2%;
+    height: 75%;
+    
+
+
 }
 .horizontalLayout{
-    border-color: #650acc;
     border-width: 10px;
-    #position: relative;
     width: 100%;
     display: flex;
     flex-direction: row;
-    #flex-wrap: wrap;
+    flex-wrap: wrap;
     justify-content: space-around;
+    height: 270px;
 
 }
 .verticalLayoutForStartAndTimer{
@@ -44,7 +54,6 @@
 }
 .secondCounter{
     position: relative;
-    #left: 5%;
     top: 30px;
     background-color: hsla(214, 95%, 70%, 0.1);
     border-color: #4285f4;
@@ -54,26 +63,26 @@
     border-radius: 10px;
     font-family: "Comic Sans MS";
     font-weight: bold;
+    border: solid black;
 }
 .startButton{
-    #align-self: center;
     position: relative;
-    #left: 5%;
     top:  120px;
     width: 200px;
     height: 100px;
     font-family: "Comic Sans MS";
     font-weight: bold;
     color: black;
+    border: solid black;
 }
 
 .labelHashPassword{
     align-self: center;
     position: relative;
-    top: 0px;
+    top: 20px;
     left: 0px;
     width: 600px;
-    font-size: 50px;
+    font-size: 35px;
     text-align: center;
     letter-spacing: 20px;
     initial-letter: normal;
@@ -83,7 +92,7 @@
     border-width: 20px;
     border-color: #4285f4;
     color: black;
-    #background-color: #7f7f7f;
+    padding: 5px;
 }
 
 .buttonConfirmWord{
@@ -105,10 +114,11 @@
 .horizontalLayoutForTextAndButton{
     align-content: center;
     width: 500px;
-    display: flex;
+    #display: flex;
     flex-direction: row;
-    #flex-wrap: wrap;
+    flex-wrap: wrap;
     justify-content: space-around;
+
 }
 .keyboard{
     align-self: center;

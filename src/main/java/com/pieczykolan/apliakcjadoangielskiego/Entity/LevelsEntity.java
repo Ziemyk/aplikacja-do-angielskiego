@@ -1,4 +1,4 @@
-package com.pieczykolan.apliakcjadoangielskiego.model;
+package com.pieczykolan.apliakcjadoangielskiego.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,12 +64,6 @@ public class LevelsEntity {
         this.levelOfAdverbial = levelOfAdverbial;
     }
 
-    public int getUserId() {
-        return userId;
-    }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
 }

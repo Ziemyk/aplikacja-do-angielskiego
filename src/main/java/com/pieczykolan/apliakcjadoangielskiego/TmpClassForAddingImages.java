@@ -1,7 +1,6 @@
 package com.pieczykolan.apliakcjadoangielskiego;
 
-import com.pieczykolan.apliakcjadoangielskiego.View.Register;
-import com.pieczykolan.apliakcjadoangielskiego.model.GameSetup;
+import com.pieczykolan.apliakcjadoangielskiego.Entity.GameSetup;
 import com.pieczykolan.apliakcjadoangielskiego.model.LevelOfWord;
 import com.pieczykolan.apliakcjadoangielskiego.model.TypeOfWord;
 import com.pieczykolan.apliakcjadoangielskiego.repo.GameSetupRepo;
@@ -13,10 +12,8 @@ import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -1,0 +1,38 @@
+.loginRouter{
+    position: absolute;
+    left:100px;
+    right: 100px;
+    width: 200px;
+    height: 50px;
+}
+.verticalLayoutRegister{
+    margin-top: 1px;
+    position: absolute;
+    left:37%;
+    background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
+    width: 400px !important;
+    border-radius: 10px;
+    height: 670px !important;
+}
+.labelName{
+
+    color: black;
+    font-weight: bold;
+    font-size: 25px;
+}
+.textFieldNick{
+    --lumo-base-color: gray;
+    --lumo-body-text-color: gray;
+    color: black;
+}
+
+
+.buttonLogin{
+    background: red;
+    color: whitesmoke;
+}
+
+.buttonRegister{
+    background: red;
+    color: whitesmoke;
+}

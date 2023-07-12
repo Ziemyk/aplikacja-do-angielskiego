@@ -4,29 +4,43 @@ html {
      --lumo-base-color: white;
      --lumo-border-radius: 10px;
 
+
 }
 body{
-    background-color: gray;
+    /*background-color: gray;*/
     border-radius: 5px;
     horiz-align: center;
 }
 
-vaadin-button{
-    border-radius: 5px;
 
-}
 vaadin-horizontal-layout{
     align-self: center;
 }
 .router-link{
-   position: absolute;
-   align-self: center;
-   top : 57%;
 
+    align-self: center;
+    color: black;
 
+}
+.checkboxTeacher{
+    color: black;
+}
+.horizontalLayoutRegisterAndCheckBox{
+    position: absolute;
+    top :51% !important;
+}
+.loginForm{
+    height: 100% !important;
 }
 vaadin-login-form-wrapper {
     border-radius: 10px;
     align-self: center;
 }
+.router-link{
+
+}
+vaadin-button{
+    --lumo-primary-color: red;
+}
+
 

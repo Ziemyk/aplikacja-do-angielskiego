@@ -1,12 +1,10 @@
-package com.pieczykolan.apliakcjadoangielskiego.MainView;
+package com.pieczykolan.apliakcjadoangielskiego.Component;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.littemplate.LitTemplate;
 import com.vaadin.flow.component.polymertemplate.Id;
-import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
-import com.vaadin.flow.templatemodel.TemplateModel;
 
 @Tag("time-counter")
 @JsModule("./timeCounter.js")

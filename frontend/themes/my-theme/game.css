@@ -1,0 +1,133 @@
+.appLayout{
+    align-sefl: center;
+}
+
+.lvlLabel{
+    position: absolute;
+    font-family: "Comic Sans MS";
+    font-size: 120%;
+    font-weight: bold;
+}
+.header{
+    align-self: center;
+    width: 100%;
+    font-family: "Comic Sans MS";
+}
+.hangmanImage {
+    align-content: center;
+    border-radius: 10px;
+    width: 65%;
+    max-width: 500px;
+    /*border: solid black;*/
+    border-width: 2px;
+    background-color: black ;
+    opacity:0.8;
+
+}
+
+.h1{
+    font-family: "Comic Sans MS";
+}
+.iconOfWord{
+    border-radius: 10px;
+    width: 24%;
+    max-width: 300px;
+    height: 75%;
+    
+
+
+}
+.horizontalLayout{
+    border-width: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    height: 270px;
+
+}
+.verticalLayoutForStartAndTimer{
+    width: 300px !important;
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+}
+.secondCounter{
+    position: relative;
+    top: 30px;
+    background-color: hsla(214, 95%, 70%, 0.1);
+    border-color: #4285f4;
+    text-align: center;
+    width: 200px;
+    height: 40px;
+    border-radius: 10px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    border: solid black;
+}
+.startButton{
+    position: relative;
+    top:  120px;
+    width: 200px;
+    height: 100px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    color: black;
+    border: solid black;
+}
+
+.labelHashPassword{
+    align-self: center;
+    position: relative;
+    top: 20px;
+    left: 0px;
+    width: 600px;
+    font-size: 35px;
+    text-align: center;
+    letter-spacing: 20px;
+    initial-letter: normal;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    border-radius: 10px;
+    border-width: 20px;
+    border-color: #4285f4;
+    color: black;
+    padding: 5px;
+}
+
+.buttonConfirmWord{
+    position: relative;
+    #left: 100px;
+    top: 33px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    color: black;
+}
+.textFieldLetter{
+    position: relative;
+    #left: 540px;
+    #top: 450px;
+    font-family: "Comic Sans MS";
+    font-weight: bold;
+    color: black;
+}
+.horizontalLayoutForTextAndButton{
+    align-content: center;
+    width: 500px;
+    #display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+}
+.keyboard{
+    align-self: center;
+    position: relative;
+}
+.progressBar{
+    align-self: center;
+    position: relative;
+    top: 10px;
+    width: 300px;
+    margin-bottom: 0px;
+}

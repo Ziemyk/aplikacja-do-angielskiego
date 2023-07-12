@@ -10,7 +10,6 @@
 	</parent>
 	<groupId>com.pieczykolan</groupId>
 	<artifactId>apliakcja-do-angielskiego</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>apliakcja-do-angielskiego</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -18,11 +17,12 @@
 		<vaadin.version>23.3.5</vaadin.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>com.example</groupId>
-			<artifactId>exampletheme</artifactId>
-			<version>1.0</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.example</groupId>-->
+<!--			<artifactId>exampletheme</artifactId>-->
+<!--			<version>1.0</version>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -71,13 +71,32 @@
             <version>13.0</version>
             <scope>compile</scope>
         </dependency>
-
-
-
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.26</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-board-flow</artifactId>
+			<version>23.3.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-grid-pro-flow</artifactId>
+			<version>23.3.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-crud-flow</artifactId>
+			<version>23.3.6</version>
+		</dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-charts-flow</artifactId>
+            <version>23.3.6</version>
+        </dependency>
     </dependencies>
-
-
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -155,6 +174,7 @@
 								<configuration>
 									<productionMode>true</productionMode>
 								</configuration>
+
 							</execution>
 						</executions>
 					</plugin>

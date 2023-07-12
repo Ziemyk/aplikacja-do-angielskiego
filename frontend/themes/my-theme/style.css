@@ -1,8 +1,46 @@
 
 html {
-     --lumo-primary-color: green;
-     --lumo-font-family: Times;
+     --lumo-primary-color: red;
+     --lumo-base-color: white;
+     --lumo-border-radius: 10px;
+
+
 }
 body{
-    background-color: black;
+    /*background-color: gray;*/
+    border-radius: 5px;
+    horiz-align: center;
 }
+
+
+vaadin-horizontal-layout{
+    align-self: center;
+}
+.router-link{
+
+    align-self: center;
+    color: black;
+
+}
+.checkboxTeacher{
+    color: black;
+}
+.horizontalLayoutRegisterAndCheckBox{
+    position: absolute;
+    top :51% !important;
+}
+.loginForm{
+    height: 100% !important;
+}
+vaadin-login-form-wrapper {
+    border-radius: 10px;
+    align-self: center;
+}
+.router-link{
+
+}
+vaadin-button{
+    --lumo-primary-color: red;
+}
+
+

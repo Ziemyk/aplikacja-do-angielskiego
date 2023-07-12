@@ -1,130 +1,297 @@
 package com.pieczykolan.apliakcjadoangielskiego.View;
 
+import com.pieczykolan.apliakcjadoangielskiego.Layout.MainLayout;
 import com.pieczykolan.apliakcjadoangielskiego.Services.AuthService;
-import com.pieczykolan.apliakcjadoangielskiego.model.User;
+import com.pieczykolan.apliakcjadoangielskiego.Entity.LevelsEntity;
+import com.pieczykolan.apliakcjadoangielskiego.model.TypeOfWord;
+import com.pieczykolan.apliakcjadoangielskiego.Entity.User;
+import com.pieczykolan.apliakcjadoangielskiego.model.Users;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.board.Board;
+import com.vaadin.flow.component.board.Row;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.crud.BinderCrudEditor;
+import com.vaadin.flow.component.crud.Crud;
+import com.vaadin.flow.component.crud.CrudEditor;
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.shared.Tooltip;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.theme.Theme;
 import org.springframework.beans.factory.annotation.Autowired;
-//@PageTitle("EnglishStudy")
-//@CssImport("./styles/shared-styles.css")
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
-@Route("EnglishStudy")
+@Route(value = "EnglishStudy")
+@CssImport("themes/my-theme/mainPageStyle.css")
 public class MainPage extends VerticalLayout  {
     private User user ;
-    static public int level = 1;
-    public int getLevel() {
-        return level;
-    }
+    static public int currentLevel = 1;
+    public TypeOfWord currentTypeOfWord;
+    public final List<Integer> arrayOfTypes = new ArrayList<>();
+    private final List<Image> arrayOfIconsLevel = new ArrayList<>();
+    private final List<Label> arrayOfLabelType = new ArrayList<>();
+    private final List<TypeOfWord> arrayOfTypeWord =  new ArrayList<>();
 
-    public void setLevel(int level) {
-
-        this.level = level;
-    }
+    private List<User> arrayOfUser = new ArrayList<>();
+    private List<LevelsEntity> arrayOfLevels = new ArrayList<>();
+    private Optional<LevelsEntity> levelsEntity;
     AuthService authService;
-   @Autowired
+    //Layouts
+    private final MainLayout mainLayout = new MainLayout();
+    private final VerticalLayout verticalLayoutUserView = new VerticalLayout();
+    HorizontalLayout horizontalLayoutBoardLevel = new HorizontalLayout();
+    HorizontalLayout horizontalLayoutUsernameAvatar = new HorizontalLayout();
+    HorizontalLayout horizontalLayoutCrudAndUserView = new HorizontalLayout();
+    private VerticalLayout verticalLayoutForChosen = new VerticalLayout();
+    //Components
+    private final Label labelUsername = new Label();
+
+    private Image avatarImage = new Image();
+    private Button buttonLogout = new Button("Wyloguj się");
+    private Button buttonPlay = new Button("Start");
+    private Image iconLevel = new Image();
+    private Label labelChosenType = new Label("Nie wybrałeś jeszcze żadnego trybu");
+    private Label labelChosenLevel = new Label("Nie wybrałeś jeszcze żadnego poziomu");
+    private Crud<Users> crud;
+
+
+    @Autowired
     public MainPage(AuthService authService)  {
         this.authService = authService;
         user = VaadinSession.getCurrent().getAttribute(User.class);
-        //getElement().getStyle().set("background","gray");
-        add(userView(),lvlView());
-
-        //userView();
-        //lvlView();
-    }
-//    public HorizontalLayout horizontallayout(){
-//       user = authService.updateData(user.getNickName());
-//       HorizontalLayout horizontalLayout = new HorizontalLayout();
-//       horizontalLayout.add(setLevelIcon("level" + user.getLevel() + ".png"),userView());
-//       setHorizontalComponentAlignment(Alignment.END,userView());
-//       //horizontalLayout.setSpacing(true);
-//       return horizontalLayout;
-//    }
-
-    public VerticalLayout userView() {
-        VerticalLayout verticalLayout = new VerticalLayout();
+        levelsEntity = authService.getLevelsEntity(user.getId());
         user = authService.updateData(user.getNickName());
-        Notification.show("Hello " + user.getNickName()).setPosition(Notification.Position.TOP_STRETCH);
-        Label labelName = new Label(user.getNickName());
-        labelName.getStyle().set("font-weight","bold");
-        Image image = authService.setImageFormDatabase(user.getId());
-        image.setHeight(200, Unit.PIXELS);
-        image.setWidth(200, Unit.PIXELS);
+        setArrayOfLevels();
+        setCrud();
+        Notification.show("Hello " + user.getNickName()).setPosition(Notification.Position.TOP_START);
+        setMainLayout();
+        setHorizontalLayoutCrudAndUserView();
+        userView();
+        lvlView();
+        add(mainLayout, horizontalLayoutCrudAndUserView,horizontalLayoutBoardLevel);
+        //TODO wystylizowac mainPage zaokrąglic zdj, poprawić layouty itp
+        // rozważyć zrobienie konta admin dla nauczyciel aktóry bedzie mógł oglądac wyniki swoich uczniów
 
 
-        Button buttonLogout = new Button("Log out");
+    }
+    public void setMainLayout(){
+        mainLayout.addToNavbar( buttonLogout);
+    }
+    public void setHorizontalLayoutCrudAndUserView(){
+        horizontalLayoutCrudAndUserView.add(crud,verticalLayoutUserView);
+        setHorizontalComponentAlignment(Alignment.START,crud);
+    }
+    public void setCrud(){
+        crud = new Crud<>(Users.class,createGrid(), creatEditor());
+        crud.setDataProvider(setArrayOfCrudUsers());
+        crud.setToolbarVisible(false);
+        crud.setHeight(270, Unit.PIXELS);
+
+    }
+    public ListDataProvider<Users> setArrayOfCrudUsers(){
+        List<Users> arrayOfCrudUsers = new ArrayList<>();
+        arrayOfUser = authService.getAllUsers();
+        arrayOfLevels = authService.getAllLevels();
+        for(int i=0;i<arrayOfUser.size();i++){
+            Users users = new Users();
+            users.setUsername(arrayOfUser.get(i).getNickName());
+            users.setUserAvatar(authService.setImageFormDatabase(arrayOfUser.get(i).getId()));
+            users.setVerb(arrayOfLevels.get(i).getLevelOfVerb());
+            users.setNoun(arrayOfLevels.get(i).getLevelOfNoun());
+            users.setAdjective(arrayOfLevels.get(i).getLevelOfAdjective());
+            users.setAdverbial(arrayOfLevels.get(i).getLevelOfAdverbial());
+            arrayOfCrudUsers.add(users);
+            arrayOfCrudUsers.get(i).getUserAvatar().addClassName("user-avatar-crud");
+        }
+        return new ListDataProvider<>(arrayOfCrudUsers);
+    }
+    private CrudEditor<Users> creatEditor() {
+        Label username =  new Label("Nazwa Użytkownika");
+        Image userAvatar = new Image();
+        //userAvatar.addClassName("user-avatar-crud");
+        Label verb = new Label("Czasowniki");
+        Label noun= new Label("Rzeczowniki");
+        Label adjective = new Label("Przymiotniki");
+        Label adverbial = new Label("Okoliczniki");
+        FormLayout form = new FormLayout(username,userAvatar,verb,noun,adjective,adverbial);
+        Binder<Users> binder = new Binder<>(Users.class);
+
+        return new BinderCrudEditor<>(binder, form);
+
+    }
+
+    private Grid<Users> createGrid() {
+        Grid<Users> grid = new Grid<>();
+        grid.setWidth("700px");
+        grid.addColumn(Users::getUsername).setHeader("Nazwa Użytkownika").setSortable(true)
+            .setWidth("50px");
+        grid.addComponentColumn(Users::getUserAvatar).setHeader("Avatar")
+                .setWidth("50px");
+        grid.addColumn(Users::getVerb).setHeader("Czasownik").setSortable(true)
+                .setWidth("50px");
+        grid.addColumn(Users::getNoun).setHeader("Rzeczownik").setSortable(true)
+                .setWidth("50px");
+        grid.addColumn(Users::getAdjective).setHeader("Przymiotnik").setSortable(true)
+                .setWidth("50px");
+        grid.addColumn(Users::getAdverbial).setHeader("Okolicznik").setSortable(true)
+                .setWidth("50px");
+        Crud.addEditColumn(grid);
+        return grid;
+}
+
+    public void userView() {
+        setHorizontalLayoutUsernameAvatar();
         buttonLogout.addClickListener(e -> {
+            getUI().get().getSession().close();
             UI.getCurrent().getPage().setLocation("/");
             VaadinSession.getCurrent().setAttribute(User.class, null);
+
         });
-        Button buttonAccount = new Button("My Account");
-        Button buttonAchievements = new Button("My Achievements");
-        Button buttonPlay = new Button("Play");
-        buttonPlay.addClickListener(e ->{
-            UI.getCurrent().getPage().setLocation("Game/level/"+ level);
-        });
-        buttonPlay.addClickListener(e -> buttonAccount.setVisible(false));
-        Image iconLevel = setLevelIcon("level" + user.getLevel() + ".png");
-        Tooltip tooltip ;
-        HorizontalLayout horizontalLayoutIcons = new HorizontalLayout();
-        horizontalLayoutIcons.add(iconLevel,image);
-        HorizontalLayout horizontalLayoutButtons = new HorizontalLayout();
-        horizontalLayoutButtons.add(buttonAchievements, buttonAccount, buttonLogout);
-        setHorizontalComponentAlignment(Alignment.END, horizontalLayoutIcons, labelName, horizontalLayoutButtons);
-        setHorizontalComponentAlignment(Alignment.START,iconLevel);
-        //setHorizontalComponentAlignment(Alignment.BASELINE, buttonLogout);
-        setHorizontalComponentAlignment(Alignment.CENTER, buttonPlay);
-       // setLevelIcon("level" + user.getLevel() + ".png");
-        verticalLayout.add(horizontalLayoutButtons, horizontalLayoutIcons, labelName, buttonPlay);
-        return verticalLayout;
+        verticalLayoutUserView.setWidth("30%");
+        setHorizontalComponentAlignment(Alignment.END,verticalLayoutUserView);
+        verticalLayoutUserView.add(horizontalLayoutUsernameAvatar);
+        setArrayOfIconsLevel();
+        setClassName();
+        setVisualAspects();
     }
+    public void setArrayOfIconsLevel(){
 
+        arrayOfIconsLevel.add(setLevelIcon("level" + levelsEntity.get().getLevelOfVerb() + ".png"));
+        arrayOfIconsLevel.add(setLevelIcon("level" + levelsEntity.get().getLevelOfNoun() + ".png"));
+        arrayOfIconsLevel.add(setLevelIcon("level" + levelsEntity.get().getLevelOfAdjective() + ".png"));
+        arrayOfIconsLevel.add(setLevelIcon("level" + levelsEntity.get().getLevelOfAdverbial() + ".png"));
+        arrayOfLabelType.add(new Label("  CZASOWNIKI  " + " "));
+        arrayOfLabelType.add(new Label(" RZECZOWNIKI  " + " "));
+        arrayOfLabelType.add(new Label("PRZYMIOTNIKI  "));
+        arrayOfLabelType.add(new Label(" OKOLICZNIKI  " + " "));
+        for(int i=0;i<4;i++) {
+            HorizontalLayout horizontalLayoutForLevelIconAndType = new HorizontalLayout();
+            arrayOfIconsLevel.get(i).setClassName("icon-level");
+            arrayOfLabelType.get(i).setClassName("label-type");
+            horizontalLayoutForLevelIconAndType.add(arrayOfLabelType.get(i),new Icon(VaadinIcon.ARROW_RIGHT), arrayOfIconsLevel.get(i));
+            verticalLayoutUserView.add(horizontalLayoutForLevelIconAndType);
+        }
+    }
+    public void setHorizontalLayoutUsernameAvatar(){
+        avatarImage = authService.setImageFormDatabase(user.getId());
+        labelUsername.setText(user.getNickName());
+        horizontalLayoutUsernameAvatar.add(labelUsername,avatarImage);
+    }
+    private void lvlView() {
+        verticalLayoutForChosen.add(labelChosenType,labelChosenLevel);
+        setArrayOfTypeWord();
+        horizontalLayoutBoardLevel.add(verticalLayoutForChosen);
+        for (int typeOfWord = 0; typeOfWord < 4; typeOfWord++) {
+            Board levelBoard = new Board();
+            Row row = new Row();
+            String wordType =arrayOfTypeWord.get(typeOfWord).toString();
+            row.add(createCellText(wordType));
+            row.setClassName("row");
+            levelBoard.add(row);
+            for (int level = 1; level <= 5; level++) {
+                levelBoard.add(createCellButton(createButton(wordType,level, typeOfWord)));
+            }
+            horizontalLayoutBoardLevel.add(levelBoard);
+        }
+        buttonPlay.addClickListener(e ->{
+            UI.getCurrent().getPage().setLocation("Game/type/"+ currentTypeOfWord.toString() +"/level/"+ currentLevel);
+            e.getSource().setVisible(false);
+        });
+        horizontalLayoutBoardLevel.add(buttonPlay);
 
-    private Button createButton(int level){
-        Button button = new Button("Level" + level);
-        button.setHeight(80,Unit.PIXELS);
-        button.setWidth(200,Unit.PIXELS);
-        button.addClickListener(e -> this.level = level);
-        if(level > user.getLevel()) {
+    }
+    public void setArrayOfLevels(){
+        arrayOfTypes.add(levelsEntity.get().getLevelOfVerb());
+        arrayOfTypes.add(levelsEntity.get().getLevelOfNoun());
+        arrayOfTypes.add(levelsEntity.get().getLevelOfAdjective());
+        arrayOfTypes.add(levelsEntity.get().getLevelOfAdverbial());
+    }
+    public void setArrayOfTypeWord(){
+        arrayOfTypeWord.add(TypeOfWord.VERB);
+        arrayOfTypeWord.add(TypeOfWord.NOUN);
+        arrayOfTypeWord.add(TypeOfWord.ADJECTIVE);
+        arrayOfTypeWord.add(TypeOfWord.ADVERBIAL);
+    }
+    private Button createButton(String wordType ,int level, int typeOfWord){
+        Button button = new Button("Poziom : " + level);
+        button.addClassName("level-button");
+        //button.getStyle().set("color", "black");
+        button.addClickListener(e -> {
+            this.currentLevel = level;
+            this.currentTypeOfWord = TypeOfWord.values()[typeOfWord];
+            labelChosenType.setText("Wybrałeś tryb: " + wordType);
+            labelChosenLevel.setText("Wybrałeś poziom: " + level);
+
+        });
+        if(level > arrayOfTypes.get(typeOfWord)) {
             button.setEnabled(false);
-
         }
         return button;
     }
-    private Scroller lvlView(){
-        Section levelSection = new Section();
-        levelSection.add(new H3("Levels"));
-        for(int i = 1;i <= 10; i++){
-            levelSection.add(createButton(i));
-        }
-        Scroller scrollerButtons = new Scroller(new Div(levelSection));
-        scrollerButtons.setHeight(500,Unit.PIXELS);
-        scrollerButtons.setWidth(450,Unit.PIXELS);
-        scrollerButtons.setScrollDirection(Scroller.ScrollDirection.VERTICAL);
-        scrollerButtons.getStyle()
-                .set("border-bottom", "1px soli  d var(--lumo-contrast-20pct)")
-                .set("padding", "var(--lumo-space-m)");
-        return scrollerButtons;
 
+
+    public void setClassName(){
+        avatarImage.setClassName("avatar-image");
+        iconLevel.setClassName("icon-level");
+        buttonLogout.setClassName("button-logout");
+        buttonPlay.setClassName("button-play");
+        labelUsername.setClassName("label-name");
+        verticalLayoutUserView.setClassName("vertical-user-view");
+        horizontalLayoutBoardLevel.setClassName("horizontal-board-level");
+        labelChosenType.setClassName("labelChosenType");
+        labelChosenLevel.setClassName("labelChosenLevel");
+        verticalLayoutForChosen.setClassName("verticalForChosen");
+
+    }
+
+    public int getLevel() {
+        return currentLevel;
+    }
+    public void setLevel(int level) {
+
+        this.currentLevel = level;
+    }
+    public void setVisualAspects(){
+        buttonLogout.setIcon(new Icon(VaadinIcon.SIGN_OUT));
+        buttonPlay.setIcon(new Icon(VaadinIcon.PLAY));
+    }
+
+    private static Component createCellText(String text) {
+        Div div = new Div();
+        div.setText(text);
+        div.addClassNames("cellText");
+
+        return div;
+    }
+    private static Component createCellButton(Button b) {
+        Div div = new Div();
+        div.add(b);
+        div.addClassNames("cellButton");
+
+        return div;
     }
     private Image setLevelIcon(String image){
         StreamResource imageResource;
         imageResource = new StreamResource(image,
                 () -> getClass().getResourceAsStream("/IconsOfLevel/" + image));
         Image imageLevel = new Image();
-        imageLevel.setWidth(100,Unit.PIXELS);
-        imageLevel.setHeight(100,Unit.PIXELS);
         imageLevel.setSrc(imageResource);
         return imageLevel;
 
@@ -136,10 +303,4 @@ public class MainPage extends VerticalLayout  {
         return imageProfile;
     }
 }
-//if(imageBytes == null){
-//            imageResource = new StreamResource("user",
-//                    () -> authService.setImageFormDatabase(id));
-//        }else{
-//             imageResource = new StreamResource(imageBytes,
-//                    () -> getClass().getResourceAsStream("/Images/" + image));
-//        }
+

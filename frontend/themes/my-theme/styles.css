@@ -1,0 +1,21 @@
+/* Import your application global css files here or add the styles directly to this file */
+html {
+   border-radius: 10px;
+   min-width: 800px;
+}
+body{
+    #position: static;
+    background-image: url("https://img.freepik.com/free-vector/flat-design-english-school-background_23-2149487419.jpg?w=2000");
+    min-width: 1050px;
+
+}
+h1{
+    border-radius: 25px;
+    font-family: "Courier New";
+    font-size: 25px;
+    text-align: center;
+    align-content: center;
+}
+.header{
+    align-items: center;
+}

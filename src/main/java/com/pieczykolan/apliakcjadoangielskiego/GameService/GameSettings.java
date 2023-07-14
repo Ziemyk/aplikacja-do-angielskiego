@@ -27,7 +27,7 @@ public class GameSettings  {
     }
 
     public List<GameSetup> getGameSetup(int level){
-        List<GameSetup> chosenWords = new ArrayList<>();
+        List<GameSetup> chosenWords;
         List<GameSetup> chosenWordsAfterRandom = new ArrayList<>();
         chosenWords = gameSetupRepo.findAllByLevelOfWordLessThanEqualAndTypeOfWord(LevelOfWord.values()[level],type);
         Random random = new Random();

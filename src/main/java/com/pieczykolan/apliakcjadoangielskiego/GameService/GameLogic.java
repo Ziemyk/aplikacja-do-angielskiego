@@ -84,7 +84,7 @@ public class GameLogic  {
             currentIterationOfPassword++;
             game.setProgressBar(0, numberOfRounds, currentIterationOfPassword);
             restartTimer();
-            game.displayNotification();
+            game.displayNotification(currentPassword, translateWord.get(currentIterationOfPassword-1));
             if (currentIterationOfPassword == numberOfRounds) {
                 endGame(true);
             } else {
@@ -104,7 +104,7 @@ public class GameLogic  {
         if(currentHashPassword.equals(currentPassword)){
             currentIterationOfPassword++;
             game.setProgressBar(0, numberOfRounds, currentIterationOfPassword);
-            game.displayNotification();
+            game.displayNotification(currentPassword, translateWord.get(currentIterationOfPassword-1));
             if(currentIterationOfPassword == numberOfRounds){
                 endGame(true);
             }else {

@@ -24,7 +24,27 @@
     opacity:0.8;
 
 }
+.words{
 
+    font-family: "Comic Sans MS";
+    opacity: 0.8;
+    align-items: center;
+    font-size: 25px !important;
+    color: black ;
+    font-weight: bold;
+    height: 25px !important;
+}
+.wordsLayout{
+    background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
+    border-radius: 5px;
+    position: absolute;
+    left: 5%;
+    bottom: 50px !important;
+    width: 300px !important;
+    height: 300px !important;
+
+
+}
 .h1{
     font-family: "Comic Sans MS";
 }

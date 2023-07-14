@@ -5,10 +5,10 @@ import com.pieczykolan.apliakcjadoangielskiego.Component.SecondsCounter;
 import com.pieczykolan.apliakcjadoangielskiego.Services.AuthService;
 import com.pieczykolan.apliakcjadoangielskiego.GameService.GameLogic;
 
+import com.pieczykolan.apliakcjadoangielskiego.model.TranslateWord;
 import com.pieczykolan.apliakcjadoangielskiego.repo.GameSetupRepo;
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.*;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
@@ -23,6 +23,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.virtuallist.VirtualList;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
@@ -30,6 +32,7 @@ import com.vaadin.flow.server.StreamResource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -47,9 +50,14 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
     private Image iconOfWord = new Image();
     private Button startButton = new Button("Start");
     private ListBox<String> listBoxOfWords = new ListBox<>();
-    private ProgressBar progressBar =  new ProgressBar();
+    private final ProgressBar progressBar =  new ProgressBar();
     private KeyboardComponent keyboardComponent;
     private SecondsCounter secondsCounter = new SecondsCounter();
+
+
+    private List<TranslateWord> words = new ArrayList<>();
+
+
     Label lvlLabel = new Label();
     UI ui = UI.getCurrent();
 
@@ -113,6 +121,7 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
         horizontalLayout.setClassName("horizontalLayout");
         appLayout.setClassName("appLayout");
         header.setClassName("header");
+
 
 
     }
@@ -217,9 +226,25 @@ public class Game extends VerticalLayout implements BeforeEnterObserver {
         add(dialogWin);
         dialogWin.open();
     }
-
-    public void displayNotification() {
+    private final ComponentRenderer<Component, TranslateWord> wordCardRenderer = new ComponentRenderer<>(
+            word -> {
+                HorizontalLayout cardLayout = new HorizontalLayout();
+                cardLayout.setMargin(true);
+                cardLayout.addClassName("words");
+                cardLayout.add(new Div( new Text(word.getWord())));
+                cardLayout.add(new Div( new Text(" - ")));
+                cardLayout.add(new Div( new Text(word.getTranslateWord())));
+                return cardLayout;
+            }
+    );
+    public void displayNotification(String word, String translateWord) {
         Notification.show("Word guessed. Congratulations !!!");
+        VirtualList<TranslateWord> guessedWord = new VirtualList<>();
+        words.add(new TranslateWord(word,translateWord));
+        guessedWord.setRenderer(wordCardRenderer);
+        guessedWord.setItems(words);
+        guessedWord.addClassName("wordsLayout");
+        add(guessedWord);
     }
 
     public void setListBoxOfWord(String guessedWord) {
